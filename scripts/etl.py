@@ -49,7 +49,25 @@ def main():
         (OUT / "cap-2026-q1-original.csv").write_bytes(download(CSV_URL))
     except Exception as e:
         print("Optional CSV download failed:", e)
-    rows = json.loads(raw)
+    # The publisher's .json contains comma-separated top-level JSON objects (not an array).
+    # Preserve the original bytes; decode each object without altering any source values.
+    text = raw.decode("utf-8-sig")
+    try:
+        rows = json.loads(text)
+    except json.JSONDecodeError:
+        decoder = json.JSONDecoder()
+        rows = []
+        pos = 0
+        while pos < len(text):
+            while pos < len(text) and (text[pos].isspace() or text[pos] in ",;"):
+                pos += 1
+            if pos >= len(text):
+                break
+            row, end = decoder.raw_decode(text, pos)
+            if not isinstance(row, dict):
+                raise RuntimeError("Unexpected CAP top-level JSON item")
+            rows.append(row)
+            pos = end
     if isinstance(rows, dict):
         rows = next((v for v in rows.values() if isinstance(v, list)), [])
     if not isinstance(rows, list) or not rows:
