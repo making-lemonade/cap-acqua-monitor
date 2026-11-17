@@ -14,3 +14,47 @@
 .methods .table-wrap a:hover{text-decoration:underline}
 @media(max-width:1180px){.filters-row{flex-wrap:wrap}.filters-row label{flex:1 1 200px}.filters-row .param-filter{flex:2 1 260px!important}.filters-row button{flex:0 0 auto}}
 @media(max-width:700px){.filter-hint{display:block;margin:5px 0 0}.filters-row .param-filter{width:100%}.pagination{flex-wrap:wrap}}
+
+/* Signals & Cluster workspace: understated, accessible Apple-inspired presentation */
+.signals-lab{display:flex;flex-direction:column;gap:0}
+.signals-lab .stats{margin-top:0}
+.signals-lab .subtle-note{background:color-mix(in srgb,var(--blue) 6%,var(--surface));border-color:color-mix(in srgb,var(--blue) 13%,var(--border));color:var(--ink);align-items:center}
+.signals-lab .subtle-note span{line-height:1.65}
+.signals-lab .panel h2{font-weight:700}
+.signals-lab .table-wrap{max-width:100%;overflow:auto}
+.signals-lab table{min-width:800px}
+.signals-lab td{white-space:normal;min-width:90px;vertical-align:middle;line-height:1.5}
+.signals-lab th{white-space:nowrap}
+.signals-lab .label{white-space:nowrap}
+.signals-lab .label.stat_label{background:#efeafa;color:#7353aa}
+.dark .signals-lab .label.stat_label{background:#3e315c;color:#d9c9fa}
+.signals-lab .city-chips{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 22px}
+.city-chip{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--ink);padding:12px 14px;min-width:150px;max-width:260px;cursor:pointer;transition:border-color .15s,background .15s}
+.city-chip:hover,.city-chip.chip-current{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 6%,var(--surface))}
+.city-chip b{font-size:11px;letter-spacing:.1px}
+.city-chip span{font-size:10px;color:var(--muted)}
+.text-action{border:0;background:none;color:var(--blue);padding:0;cursor:pointer;font-weight:600;font-size:inherit;text-align:left}
+.text-action:hover{text-decoration:underline}
+.signal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:0 0 16px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.signal-toggle{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);cursor:pointer}
+.signal-toggle input{accent-color:var(--blue);width:14px;height:14px}
+.show-more{margin:17px auto 0}
+.cluster-filters{margin-top:14px}
+.config-link{text-decoration:none;align-self:start;font-size:11px}
+.muted-paragraph{font-size:12px;color:var(--muted);line-height:1.7;margin:12px 0}
+.small-note{font-size:11px;color:var(--muted);line-height:1.65;margin:16px 0}
+.cluster-chart{height:370px;margin-bottom:14px}
+.correlation-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}
+.correlation-item{border:1px solid var(--border);border-radius:12px;padding:15px 17px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.correlation-item span{font-size:11px;line-height:1.5}
+.correlation-item span b{color:var(--blue)}
+.correlation-item strong{font-size:14px;font-variant-numeric:tabular-nums}
+.correlation-item small{color:var(--muted);font-size:10px;grid-column:1 / -1}
+.detail-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.detail-tile{background:var(--bg);border:1px solid var(--border);border-radius:13px;padding:16px;min-width:0;display:flex;flex-direction:column;gap:11px}
+.detail-tile>span{color:var(--muted);font-size:11px}
+.detail-tile>b{font-size:16px;letter-spacing:-.2px;overflow-wrap:anywhere}
+.detail-tile>small{font-size:10px;color:var(--muted);line-height:1.65}
+.neighborhood-map{margin-top:22px;min-height:360px}
+@media(max-width:1240px){.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.correlation-list{grid-template-columns:1fr}.signals-lab .config-link{margin-left:auto}}
+@media(max-width:700px){.signals-lab .stats{grid-template-columns:repeat(2,1fr)}.city-chip{min-width:125px;padding:11px;flex:1 1 135px}.city-chip span{font-size:9px}.signals-lab .panel-head{flex-wrap:wrap}.signals-lab .table-wrap{margin:0 -6px}.cluster-filters{gap:10px}.cluster-chart{height:340px}.detail-grid{grid-template-columns:1fr 1fr;gap:8px}.detail-tile{padding:11px}.detail-tile>b{font-size:13px}.neighborhood-map{min-height:300px}.signals-lab .stat strong{font-size:25px}}
