@@ -54,7 +54,7 @@ def standard_unit(value):
         return "µg/l"
     if n == "mgl":
         return "mg/l"
-    if n in ("uscm", "uscm20c", "uscmat20c"):
+    if n.startswith("uscm"):
         return "µS/cm"
     if n == "ufc100ml":
         return "UFC/100ml"
@@ -79,7 +79,7 @@ def source_column_label(value):
     elif "-" in name:
         label, suffix = name.rsplit("-", 1)
         unit = standard_unit(suffix)
-        if normalize(suffix) in ("mgl","ugl","gl","uscm","uscm20c","uscmat20c","ufc100ml","ufc1ml","ufc1l","ntu","f","unitaph","bql"):
+        if normalize(suffix) in ("mgl","ugl","gl","ufc100ml","ufc1ml","ufc1l","ntu","f","unitaph","bql") or normalize(suffix).startswith("uscm"):
             return label.strip(), unit
     if normalize(name).startswith("conduttivit") and "20" in name:
         return "Conduttività a 20° C", None
@@ -125,7 +125,7 @@ def read_schema(rows, pid):
         print(f"WARNING {pid}: no source-threshold header; legal comparison unavailable", flush=True)
         limits = []
     def at(row, index):
-        return row[index] if index < len(row) else ""
+        return row[index] if 0 <= index < len(row) else ""
     # Find municipality / address / sample columns from published labels.
     city_index = next((i for i, v in enumerate(labels) if normalize(v) == "comune"), 1)
     address_index = next((i for i, v in enumerate(labels) if normalize(v) == "indirizzo"), 2)
