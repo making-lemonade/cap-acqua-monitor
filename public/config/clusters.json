@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "description": "Curated analytical groups for CAP water quality. Similarity here means thematic grouping, not proven correlation or a shared water source.",
+  "version": 2,
+  "description": "Expert-curated thematic clusters constructed from actual parameter names in the CAP 2024-2026 manifest. Not a statistical or causal cluster classification. Some indicators are only present in select quarters.",
   "analysis": {
     "near_limit_fraction": 0.8,
     "statistical_robust_z": 3.5,
@@ -18,25 +18,85 @@
   },
   "clusters": [
     {
-      "id": "metalli",
-      "label": "Metalli e metalloidi",
-      "description": "Elementi in tracce; unità e limiti sono valutati individualmente.",
+      "id": "pfas",
+      "label": "PFAS · indicatori principali",
+      "description": "Sostanze PFAS più note e somme pubblicate da CAP. Le diverse somme hanno definizioni che possono variare: non sommarle né trattarle come equivalenti.",
+      "parameters": [
+        "Somma di PFAS",
+        "Somma di 30 PFAS",
+        "Somma di 4 PFAS",
+        "Acido Perfluorottanoico (PFOA)",
+        "Acido Perfluorottansolfonico (PFOS)",
+        "Acido Perfluoroesansolfonico (PFHXS)",
+        "Acido Perfluorononanoico (PFNA)"
+      ]
+    },
+    {
+      "id": "pfas_catena",
+      "label": "PFAS · catene corte e medie",
+      "description": "PFAS a catena corta e media monitorati nei dataset CAP; monitoraggio di concentrazioni senza presunzioni sulla provenienza.",
+      "parameters": [
+        "Acido Perfluorobutanoico (PFBA)",
+        "Acido Perfluorobutansolfonico (PFBS)",
+        "Acido Perfluoropentanoico (PFPEA)",
+        "Acido Perfluoropentansolfonico (PFPES)",
+        "Acido Perfluoroesanoico (PFHXA)",
+        "Acido Perfluoroeptanoico (PFHPA)",
+        "Acido Perfluoroeptansolfonico (PFHPS)",
+        "Acido Perfluorodecanoico (PFDA)"
+      ]
+    },
+    {
+      "id": "pfas_emergenti",
+      "label": "PFAS · composti emergenti",
+      "description": "GenX, cC6O4, fluorotelomeri e altri PFAS identificati nelle fonti: dati disponibili soltanto per alcuni periodi.",
+      "parameters": [
+        "GenX",
+        "cC6O4",
+        "Acido 6:2 Fluorotelomersolfonico",
+        "Acido Dodecafluoro-3H-4,8-diossanonanoico",
+        "LM6",
+        "cloro-perfluoropolietere carbossilato, MFS-M3 (ADV-M3)",
+        "cloro-perfluoropolietere carbossilato, MFS-M4 (ADV-M4)",
+        "cloro-perfluoropolietere carbossilato, MFS-N2 (ADV-N2)"
+      ]
+    },
+    {
+      "id": "metalli_pesanti",
+      "label": "Metalli pesanti e metalloidi",
+      "description": "Arsenico, piombo, cadmio e altri elementi in tracce. Le soglie sono specifiche per ciascun parametro.",
       "parameters": [
         "Arsenico (As)",
-        "Manganese (Mn)",
-        "Ferro (Fe)",
-        "Nichel (Ni)",
         "Piombo (Pb)",
+        "Cadmio (Cd)",
+        "Mercurio (Hg)",
+        "Nichel (Ni)",
         "Cromo Totale (Cr)",
-        "Alluminio (Al)",
+        "Cromo Esavalente",
         "Antimonio (Sb)",
-        "Bario (Ba)"
+        "Uranio (U)",
+        "Selenio (Se)"
+      ]
+    },
+    {
+      "id": "metalli_indicatori",
+      "label": "Metalli e indicatori di rete",
+      "description": "Ferro, manganese, alluminio e altri elementi; possono avere significati differenti per qualità organolettica, chimica e rete.",
+      "parameters": [
+        "Ferro (Fe)",
+        "Manganese (Mn)",
+        "Alluminio (Al)",
+        "Rame (Cu)",
+        "Zinco (Zn)",
+        "Vanadio (V)",
+        "Bario (Ba)",
+        "Boro (B)"
       ]
     },
     {
       "id": "azotati",
-      "label": "Composti azotati",
-      "description": "Parametri del ciclo dell’azoto; una correlazione non dimostra una causa comune.",
+      "label": "Nitrati, nitriti e ammonio",
+      "description": "Parametri azotati, da confrontare separatamente con i rispettivi limiti e serie storiche.",
       "parameters": [
         "Nitrato (come NO3)",
         "Nitrito (come NO2)",
@@ -45,8 +105,8 @@
     },
     {
       "id": "mineralizzazione",
-      "label": "Mineralizzazione e sali",
-      "description": "Parametri generali della chimica dell’acqua; confronto storico su scala relativa.",
+      "label": "Durezza, sali e mineralizzazione",
+      "description": "Caratteristiche minerali dell'acqua e composizione ionica. Diverse unità: confronto su scala relativa.",
       "parameters": [
         "Conduttività a 20° C",
         "Durezza Totale",
@@ -55,53 +115,141 @@
         "Sodio (Na)",
         "Cloruro (Cl)",
         "Solfato (SO4)",
-        "Potassio (K)"
-      ]
-    },
-    {
-      "id": "pfas",
-      "label": "PFAS",
-      "description": "Singole sostanze e somme di PFAS: le diverse definizioni delle somme non sono intercambiabili.",
-      "parameters": [
-        "Somma di PFAS",
-        "Somma di 30 PFAS",
-        "Somma di 4 PFAS",
-        "Acido Perfluorottanoico (PFOA)",
-        "Acido Perfluorottansolfonico (PFOS)",
-        "PFAS (Somma di Sostanze Perfluoroalchiliche)"
+        "Potassio (K)",
+        "Bicarbonato (HCO3)"
       ]
     },
     {
       "id": "microbiologia",
-      "label": "Microbiologia",
-      "description": "Presenze microbiologiche; l'assenza di misurazioni non equivale ad assenza del microrganismo.",
+      "label": "Microbiologia e indicatori batterici",
+      "description": "Indicatori microbiologici riportati dalle analisi CAP. Un risultato puntuale non descrive necessariamente tutto un comune.",
       "parameters": [
         "Coliformi totali",
         "Escherichia coli (E. coli)",
         "Enterococchi",
         "Conteggio delle colonie a 22°C",
+        "Conteggio delle colonie a 36°C",
         "Legionella pneumophila",
-        "Legionella spp."
+        "Legionella spp.",
+        "Pseudomonas Aeruginosa"
       ]
     },
     {
-      "id": "trattamento",
+      "id": "disinfezione",
       "label": "Disinfezione e sottoprodotti",
-      "description": "Indicatori relativi al trattamento e a possibili sottoprodotti.",
+      "description": "Cloro residuo, clorito, clorati, bromati e trialometani: indicatori diversi e non direttamente sommabili.",
       "parameters": [
+        "Cloro Residuo (CLORORES)",
+        "Monoclorammina",
         "Clorito (ClO2)",
         "Clorati (CLO3)",
         "Bromati (BrO3)",
-        "Cloro Residuo (CLORORES)",
+        "Trialometani - Totale",
+        "Cloroformio",
         "Bromoformio",
-        "Dibromoclorometano",
-        "Cloroformio"
+        "Bromodiclorometano",
+        "Dibromoclorometano"
+      ]
+    },
+    {
+      "id": "pesticidi",
+      "label": "Pesticidi, erbicidi e metaboliti",
+      "description": "Residui di prodotti fitosanitari e relativi prodotti di trasformazione, quando effettivamente cercati da CAP.",
+      "parameters": [
+        "Antiparassitari totali",
+        "Atrazina",
+        "Atrazina desetil",
+        "Atrazina desisopropil",
+        "Atrazina desetil desisopropil",
+        "Terbutilazina",
+        "Desetil-Terbutilazina",
+        "Simazina",
+        "Metolaclor",
+        "Bentazone (LCMS)",
+        "Boscalid",
+        "Bromacile",
+        "Imidacloprid"
+      ]
+    },
+    {
+      "id": "solventi",
+      "label": "Solventi industriali e VOC",
+      "description": "Solventi alogenati e aromatici volatili: confronto per sostanza e unità.",
+      "parameters": [
+        "Solventi Totali",
+        "Tetracloroetilene",
+        "Tricloroetilene",
+        "Tetracloroetilene + Tricloroetilene",
+        "1,2 Dicloroetano",
+        "1,1 Dicloroetilene",
+        "Cloruro Vinile",
+        "Tetracloruro di Carbonio",
+        "Benzene",
+        "Toluene",
+        "Etilbenzene",
+        "o-xilene",
+        "Metilterbutiletere (MTBE)"
+      ]
+    },
+    {
+      "id": "ipa",
+      "label": "IPA · idrocarburi policiclici",
+      "description": "Idrocarburi policiclici aromatici rilevati o ricercati nelle analisi: singole sostanze e somma non intercambiabili.",
+      "parameters": [
+        "Idrocarburi Policiclici Aromatici",
+        "Benzo (a) pirene",
+        "Benzo (a) antracene",
+        "Benzo (b) fluorantene",
+        "Benzo (k) fluorantene",
+        "Benzo (ghi) perilene",
+        "Indeno (1,2,3-cd) pirene",
+        "Antracene",
+        "Crisene",
+        "Naftalene",
+        "Pirene"
+      ]
+    },
+    {
+      "id": "fisicochimici",
+      "label": "Indicatori fisico-chimici",
+      "description": "pH, torbidità, conducibilità, residuo secco e carbonio organico totale; questi indicatori non sono automaticamente contaminanti.",
+      "parameters": [
+        "pH",
+        "Torbidità",
+        "Conduttività a 20° C",
+        "Residuo Secco a 180° C",
+        "Carbonio Organico Totale (TOC)",
+        "Silice (SiO2) per calcolo"
+      ]
+    },
+    {
+      "id": "emergenti",
+      "label": "Microinquinanti emergenti",
+      "description": "Sostanze emergenti e additivi industriali censiti in alcuni trimestri, con disponibilità storica discontinua.",
+      "parameters": [
+        "Bisfenolo-A",
+        "TCEP - Tris(2 cloroetil)fosfato",
+        "Tris(2 cloroetil)fosfato",
+        "TMCP - Tris(monocloro-isopropil)fosfato",
+        "2,6-Diclorobenzammide",
+        "Dimetridazolo",
+        "Mebicar"
+      ]
+    },
+    {
+      "id": "radioattivita",
+      "label": "Radioattività ambientale",
+      "description": "Radon e attività alfa/beta totale; disponibilità limitata e valori non comparabili con gli indicatori chimici.",
+      "parameters": [
+        "Radon-222",
+        "Alfa-tot",
+        "Beta-tot"
       ]
     },
     {
       "id": "personalizzato",
       "label": "Il mio cluster",
-      "description": "Personalizza i parametri qui per creare un cluster di portfolio.",
+      "description": "Esempio modificabile: seleziona nel JSON le sostanze che desideri osservare assieme.",
       "parameters": [
         "Arsenico (As)",
         "Nitrato (come NO3)",
