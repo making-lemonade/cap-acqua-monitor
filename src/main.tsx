@@ -19,6 +19,16 @@ const compact=(n:number)=>n.toLocaleString('it-IT');
 const csv=(v:unknown)=>'"'+String(v??'').replaceAll('"','""')+'"';
 const roman=['','I','II','III','IV'];
 const periodName=(p:Period)=>roman[p.quarter]+' trim. '+p.year;
+const fmt=(n:number)=>n.toLocaleString('it-IT',{maximumFractionDigits:3});
+function limitDifference(value:number,censored:boolean,limit:number|null){
+ if(limit===null||limit===undefined)return 'Limite numerico non disponibile';
+ if(limit===0)return 'Percentuale non applicabile (limite zero)';
+ const pct=100*value/limit;
+ if(censored)return pct<=100?'< '+fmt(pct)+'% del limite · oltre '+fmt(100-pct)+'% sotto':'< '+fmt(pct)+'% del limite; posizione esatta sconosciuta';
+ if(pct>100)return fmt(pct-100)+'% sopra il limite';
+ if(pct<100)return fmt(100-pct)+'% sotto il limite';
+ return 'Pari al limite';
+}
 function App(){
  const[manifest,setManifest]=useState<Manifest|null>(null);
  const[periodId,setPeriodId]=useState('');
@@ -159,7 +169,7 @@ function App(){
         {citySummary.length?<div className="chart"><ResponsiveContainer width="100%" height="100%"><BarChart data={citySummary.slice(0,8)} layout="vertical" margin={{left:5,right:15}}><CartesianGrid horizontal={false} stroke="#edf0f5"/><XAxis type="number" allowDecimals={false}/><YAxis type="category" dataKey="city" width={120} tick={{fontSize:10}}/><Tooltip/><Bar dataKey="exceed" name="Oltre soglia CAP" fill="#e35f64" radius={[0,4,4,0]}/><Bar dataKey="near" name="Vicino alla soglia" fill="#e7b15d" radius={[0,4,4,0]}/></BarChart></ResponsiveContainer></div>:<div className="empty">Nessuna misura disponibile</div>}</section>
      </div>
     </>:tab==='data'?<section className="panel"><div className="panel-head"><div><h2>Registro delle misurazioni</h2><p>{compact(display.length)} osservazioni · {field?.name} · {periodName(period!)}</p></div><div className="search"><Search size={16}/><input placeholder="Cerca luogo o campione" value={query} onChange={e=>{setQuery(e.target.value);setPage(0)}}/></div></div>
-     <div className="table-wrap"><table><thead><tr><th>Comune</th><th>Data</th><th>Indirizzo / campione</th><th>Valore</th><th>Classificazione</th></tr></thead><tbody>{display.slice(page*100,(page+1)*100).map((s,i)=><tr key={page*100+i}><td>{s.city}</td><td>{s.date}</td><td>{s.address||s.sample||'—'}</td><td>{s.censored?'< ':''}{s.value} {field?.unit}</td><td><span className={'label '+s.status}>{s.status==='above_limit'?'Oltre soglia':s.status==='near_limit'?'Vicino alla soglia':s.status==='under_limit'?'Sotto soglia':'Non verificato'}</span></td></tr>)}</tbody></table></div>
+     <div className="table-wrap"><table><thead><tr><th>Comune</th><th>Data</th><th>Indirizzo / campione</th><th>Valore</th><th>Limite CAP</th><th>Rispetto al limite</th><th>Classificazione</th></tr></thead><tbody>{display.slice(page*100,(page+1)*100).map((s,i)=><tr key={page*100+i}><td>{s.city}</td><td>{s.date}</td><td>{s.address||s.sample||'—'}</td><td>{s.censored?'< ':''}{fmt(s.value)} {field?.unit}</td><td>{field?.limits_by_period?.[periodId]===null||field?.limits_by_period?.[periodId]===undefined?'Non disponibile':fmt(field.limits_by_period[periodId]!)} {field?.unit}</td><td>{limitDifference(s.value,s.censored,field?.limits_by_period?.[periodId]??null)}</td><td><span className={'label '+s.status}>{s.status==='above_limit'?'Oltre soglia':s.status==='near_limit'?'Vicino alla soglia':s.status==='under_limit'?'Sotto soglia':'Non verificato'}</span></td></tr>)}</tbody></table></div>
      <div className="pagination"><span>Righe {display.length?1+page*100:0}–{Math.min(display.length,(page+1)*100)} di {compact(display.length)}</span><button onClick={()=>setPage(p=>Math.max(0,p-1))} disabled={page===0}>Precedenti</button><button onClick={()=>setPage(p=>p+1)} disabled={(page+1)*100>=display.length}>Successive</button></div></section>
     :tab==='signals'?<SignalsLab manifest={manifest} city={city} onCitySelect={setCity}/>:tab==='ml'?<MlLab/>
     :<div className="methods"><section className="panel" style={{gridColumn:'1 / -1'}}><h2>Archivio ufficiale · {periods.length} trimestri</h2><p>Ogni fonte è conservata come copia originale nella directory pubblica e collegata al file pubblicato da CAP. La pipeline mantiene anche l'hash SHA-256 del contenuto scaricato.</p><div className="table-wrap"><table><thead><tr><th>Periodo</th><th>Misurazioni</th><th>Comuni</th><th>JSON originale</th><th>CSV originale</th></tr></thead><tbody>{[...periods].reverse().map(p=><tr key={p.id}><td>{roman[p.quarter]} trimestre {p.year}</td><td>{compact(p.count)}</td><td>{p.cities_count}</td><td><a href={base+'data/raw/'+p.id+'.json'} download>Scarica JSON</a> · <a href={p.source_json} target="_blank" rel="noreferrer">CAP</a></td><td><a href={base+'data/raw/'+p.id+'.csv'} download>Scarica CSV</a> · <a href={p.source_csv} target="_blank" rel="noreferrer">CAP</a></td></tr>)}</tbody></table></div></section>
