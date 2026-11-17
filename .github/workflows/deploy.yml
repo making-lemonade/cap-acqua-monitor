@@ -45,6 +45,10 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run build
+      - name: Install Chromium for interactive UI regression checks
+        run: npx playwright install --with-deps chromium
+      - name: Verify city click-through, cluster selection and mobile view
+        run: npm run test:e2e
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
