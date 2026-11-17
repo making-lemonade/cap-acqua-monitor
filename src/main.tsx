@@ -1,9 +1,10 @@
 import React,{useCallback,useEffect,useMemo,useState} from 'react';
 import{createRoot}from'react-dom/client';
 import{AreaChart,Area,LineChart,Line,XAxis,YAxis,Tooltip,ResponsiveContainer,CartesianGrid,BarChart,Bar}from'recharts';
-import{Droplets,MapPinned,Activity,Database,ArrowUpRight,Download,Search,Moon,Sun,ShieldCheck,AlertTriangle,Info,SlidersHorizontal,GitBranch,BrainCircuit,CalendarDays}from'lucide-react';
+import{Droplets,MapPinned,Activity,Database,ArrowUpRight,Download,Search,Moon,Sun,ShieldCheck,AlertTriangle,Info,SlidersHorizontal,GitBranch,BrainCircuit,CalendarDays,Network}from'lucide-react';
 import MapPanel from './MapPanel';
 import MlLab from './MlLab';
+import SignalsLab from './SignalsLab';
 import './style.css';
 
 type Field={key:string;name:string;unit:string;periods:string[];limits_by_period:Record<string,number|null>};
@@ -12,7 +13,7 @@ type Location={lat:number;lng:number};
 type Manifest={metadata:{source:string;updated_utc:string;notes:string[]};periods:Period[];cities:string[];fields:Field[];counts:{periods:number;cities:number;parameters:number;observations:number};geography:{locations:Record<string,Location>;source:string;credit:string;license:string}};
 type Sample={city:string;date:string;address:string;sample:string;value:number;censored:boolean;status:string};
 type History={period:string;city:string;count:number;measured:number;censored:number;avg:number|null;min:number|null;max:number|null;above:number;near:number;unknown:number};
-type Tab='overview'|'data'|'method'|'ml';
+type Tab='overview'|'data'|'method'|'ml'|'signals';
 const base=import.meta.env.BASE_URL;
 const compact=(n:number)=>n.toLocaleString('it-IT');
 const csv=(v:unknown)=>'"'+String(v??'').replaceAll('"','""')+'"';
@@ -117,13 +118,13 @@ function App(){
    <div className="side-label">WORKSPACE</div>
    <button className={tab==='overview'?'nav active':'nav'} onClick={()=>setTab('overview')}><Activity size={18}/> Dashboard</button>
    <button className={tab==='data'?'nav active':'nav'} onClick={()=>setTab('data')}><Database size={18}/> Esplora dati</button>
-   <button className={tab==='ml'?'nav active':'nav'} onClick={()=>setTab('ml')}><BrainCircuit size={18}/> ML Lab</button>
+   <button className={tab==='signals'?'nav active':'nav'} onClick={()=>setTab('signals')}><Network size={18}/> Segnali & Cluster</button><button className={tab==='ml'?'nav active':'nav'} onClick={()=>setTab('ml')}><BrainCircuit size={18}/> ML Lab</button>
    <button className={tab==='method'?'nav active':'nav'} onClick={()=>setTab('method')}><GitBranch size={18}/> Fonti & pipeline</button>
    <div className="side-bottom"><div className="source-pill"><span className="online-dot"/> OPEN DATA · GRUPPO CAP</div><a href="https://github.com/making-lemonade/cap-acqua-monitor" target="_blank" rel="noreferrer">Source on GitHub <ArrowUpRight size={14}/></a></div>
   </aside>
-  <main className="main"><header className="topbar"><div className="crumb">Analytics <span>/</span> {tab==='overview'?'Overview':tab==='data'?'Data explorer':tab==='ml'?'ML Lab':'Data engineering'}</div><div className="top-actions"><button className="iconbtn" aria-label="Cambia tema" onClick={()=>setDark(x=>!x)}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button><span className="avatar">AI</span></div></header>
+  <main className="main"><header className="topbar"><div className="crumb">Analytics <span>/</span> {tab==='overview'?'Overview':tab==='data'?'Data explorer':tab==='signals'?'Segnali & Cluster':tab==='ml'?'ML Lab':'Data engineering'}</div><div className="top-actions"><button className="iconbtn" aria-label="Cambia tema" onClick={()=>setDark(x=>!x)}>{dark?<Sun size={18}/>:<Moon size={18}/>}</button><span className="avatar">AI</span></div></header>
   <div className="content">
-    <div className="intro"><div><div className="eyebrow">WATER QUALITY INTELLIGENCE · 2024—2026</div><h1>{tab==='overview'?'L’acqua raccontata dai dati.':tab==='data'?'Ogni analisi, senza filtri nascosti.':tab==='ml'?'Rileva l’insolito, con metodo.':'Una pipeline trasparente.'}</h1><p>Analisi indipendente dei dati ufficiali Gruppo CAP. Esplora la qualità dell'acqua nei comuni lombardi e confronta periodi, parametri e misurazioni.</p></div><div className="updated">● {manifest?'Dati elaborati '+new Date(manifest.metadata.updated_utc).toLocaleDateString('it-IT'):'Caricamento dati'}</div></div>
+    <div className="intro"><div><div className="eyebrow">WATER QUALITY INTELLIGENCE · 2024—2026</div><h1>{tab==='overview'?'L’acqua raccontata dai dati.':tab==='data'?'Ogni analisi, senza filtri nascosti.':tab==='signals'?'Scopri i segnali. Esplora le relazioni.':tab==='ml'?'Rileva l’insolito, con metodo.':'Una pipeline trasparente.'}</h1><p>Analisi indipendente dei dati ufficiali Gruppo CAP. Esplora la qualità dell'acqua nei comuni lombardi e confronta periodi, parametri e misurazioni.</p></div><div className="updated">● {manifest?'Dati elaborati '+new Date(manifest.metadata.updated_utc).toLocaleDateString('it-IT'):'Caricamento dati'}</div></div>
     {error&&<div className="notice"><Info size={20}/>{error}</div>}
     {manifest&&<><section className="filters"><div className="filter-title"><SlidersHorizontal size={17}/> Analisi interattiva <span className="filter-hint"> {manifest.counts.periods} trimestri · {manifest.periods[0]?.year}–{manifest.periods[manifest.periods.length-1]?.year}</span></div>
       <div className="filters-row"><label><span>Periodo</span><select value={periodId} onChange={e=>changePeriod(e.target.value)}>{[...periods].reverse().map(p=><option key={p.id} value={p.id}>{roman[p.quarter]} trimestre {p.year}</option>)}</select></label>
@@ -160,7 +161,7 @@ function App(){
     </>:tab==='data'?<section className="panel"><div className="panel-head"><div><h2>Registro delle misurazioni</h2><p>{compact(display.length)} osservazioni · {field?.name} · {periodName(period!)}</p></div><div className="search"><Search size={16}/><input placeholder="Cerca luogo o campione" value={query} onChange={e=>{setQuery(e.target.value);setPage(0)}}/></div></div>
      <div className="table-wrap"><table><thead><tr><th>Comune</th><th>Data</th><th>Indirizzo / campione</th><th>Valore</th><th>Classificazione</th></tr></thead><tbody>{display.slice(page*100,(page+1)*100).map((s,i)=><tr key={page*100+i}><td>{s.city}</td><td>{s.date}</td><td>{s.address||s.sample||'—'}</td><td>{s.censored?'< ':''}{s.value} {field?.unit}</td><td><span className={'label '+s.status}>{s.status==='above_limit'?'Oltre soglia':s.status==='near_limit'?'Vicino alla soglia':s.status==='under_limit'?'Sotto soglia':'Non verificato'}</span></td></tr>)}</tbody></table></div>
      <div className="pagination"><span>Righe {display.length?1+page*100:0}–{Math.min(display.length,(page+1)*100)} di {compact(display.length)}</span><button onClick={()=>setPage(p=>Math.max(0,p-1))} disabled={page===0}>Precedenti</button><button onClick={()=>setPage(p=>p+1)} disabled={(page+1)*100>=display.length}>Successive</button></div></section>
-    :tab==='ml'?<MlLab/>
+    :tab==='signals'?<SignalsLab manifest={manifest} city={city} onCitySelect={setCity}/>:tab==='ml'?<MlLab/>
     :<div className="methods"><section className="panel" style={{gridColumn:'1 / -1'}}><h2>Archivio ufficiale · {periods.length} trimestri</h2><p>Ogni fonte è conservata come copia originale nella directory pubblica e collegata al file pubblicato da CAP. La pipeline mantiene anche l'hash SHA-256 del contenuto scaricato.</p><div className="table-wrap"><table><thead><tr><th>Periodo</th><th>Misurazioni</th><th>Comuni</th><th>JSON originale</th><th>CSV originale</th></tr></thead><tbody>{[...periods].reverse().map(p=><tr key={p.id}><td>{roman[p.quarter]} trimestre {p.year}</td><td>{compact(p.count)}</td><td>{p.cities_count}</td><td><a href={base+'data/raw/'+p.id+'.json'} download>Scarica JSON</a> · <a href={p.source_json} target="_blank" rel="noreferrer">CAP</a></td><td><a href={base+'data/raw/'+p.id+'.csv'} download>Scarica CSV</a> · <a href={p.source_csv} target="_blank" rel="noreferrer">CAP</a></td></tr>)}</tbody></table></div></section>
      <section className="panel"><h2>01 · Acquisizione e tracciabilità</h2><p>22 file sorgenti registrati per i periodi 2024–2026, con rilevamento dei nuovi collegamenti pubblicati sulla pagina ufficiale e copia byte-per-byte dei file originali.</p></section>
      <section className="panel"><h2>02 · Parsing e modellazione</h2><p>Python interpreta JSON non standard e distingue parametri, unità, date, limiti di fonte e misure censurate. I parametri con nomi o unità differenti non vengono fusi impropriamente.</p></section>
