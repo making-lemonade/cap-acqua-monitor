@@ -83,6 +83,8 @@ def source_column_label(value):
             return label.strip(), unit
     if normalize(name).startswith("conduttivit") and "20" in name:
         return "Conduttività a 20° C", None
+    if normalize(name).startswith("conteggiodellecoloniea22"):
+        return "Conteggio delle colonie a 22°C", None
     return name, None
 
 def unit_offset(labels, unit_row):
@@ -140,14 +142,26 @@ def read_schema(rows, pid):
         name, explicit_unit = source_column_label(name)
         if not name:
             continue
-        unit = standard_unit(explicit_unit if explicit_unit is not None else at(units, i + offset))
+        source_unit = standard_unit(at(units, i + offset))
+        unit = standard_unit(explicit_unit if explicit_unit is not None else source_unit)
+        derivation = "explicit_label" if explicit_unit is not None else ("shifted_column" if offset != 0 else "source_unit_row")
+        reference = REF_UNITS.get(normalize(name))
+        # Two specific CAP exports have non-uniformly misplaced unit labels. Repair
+        # ONLY parameter metadata with >=4 prior independent quarterly confirmations.
+        # Numerical values are never multiplied or converted.
+        if (pid in ("2026-q1", "2026-q2") and explicit_unit is None and reference
+                and len(reference["support"]) >= 4
+                and unit != standard_unit(reference["unit"])):
+            unit = standard_unit(reference["unit"])
+            derivation = "source_header_repaired_from_four_plus_quarters"
         id = field_id(name, unit)
         if id in used:
             id = hashlib.sha1((id + str(i)).encode()).hexdigest()[:12]
         used.add(id)
         n = numeric(at(limits, i))
         limit = n["value"] if n and not n["censored"] else None
-        fields.append({"index": i, "key": id, "name": name, "unit": unit, "limit": limit})
+        fields.append({"index": i, "key": id, "name": name, "unit": unit, "limit": limit,
+                       "source_unit": source_unit, "unit_derivation": derivation})
     if len(fields) < 40:
         raise ValueError(f"{pid}: only {len(fields)} labeled measurement columns")
     return labels, (city_index, address_index, sample_index), fields
@@ -258,7 +272,10 @@ def main():
                 "source_json": source["json_url"], "source_csv": source["csv_url"],
                 "sha256_json": hashlib.sha256(raw_json).hexdigest(),
                 "sha256_csv": hashlib.sha256(raw_csv).hexdigest(),
-                "analysis_source": "official CSV; JSON archived without conversion"
+                "analysis_source": "official CSV; JSON archived without conversion",
+                "unit_repairs": [{"name": f["name"], "source_unit": f["source_unit"], "interpreted_unit": f["unit"],
+                                  "method": f["unit_derivation"]} for f in fieldmap
+                                 if f["unit_derivation"] == "source_header_repaired_from_four_plus_quarters"]
             })
             print(f"IMPORTED {pid}: rows={sample_rows} cities={len(period_cities)} params={len(by_field)} measures={observations} encoding={encoding} date={fmt}", flush=True)
         except Exception as exc:
