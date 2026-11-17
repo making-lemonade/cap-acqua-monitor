@@ -1,0 +1,1698 @@
+{
+  "description": "Consensus physical units from official 2024 and 2025 CAP quarterly CSV headers; for auditing source metadata inconsistencies, not conversion of numeric values",
+  "selection_rule": "at least two supporting trusted-source quarters and support not less than all alternates combined",
+  "trusted_periods": [
+    "2024-q1",
+    "2024-q2",
+    "2024-q3",
+    "2025-q3",
+    "2025-q4"
+  ],
+  "generated_from": "2026-11-17 first full-history import manifest",
+  "unit_by_parameter": {
+    "mpxilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "11dicloroetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "11dicloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "112tricloroetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "12cisdicloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "12dibromoetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "12dicloroetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "12dicloropropano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "12transdicloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "15pentametilenetetrazolo": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "1naftilammina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "26diclorobenzammide": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "2naftilammina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "34dicloroanilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "35dicloroanilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "3cloroanilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "4cloroanilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acenaftene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "acenaftilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "acido62fluorotelomersolfonico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidododecafluoro3h48diossanonanoico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorobutanoicopfba": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorobutansolfonicopfbs": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorodecanoicopfda": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorododecanoicopfdoda": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorododecansolfonico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroeptanoicopfhpa": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroeptansolfonicopfhps": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroesanoicopfhxa": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroesansolfonicopfhxs": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorononanoicopfna": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorononansolfonico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoropentanoicopfpea": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoropentansolfonicopfpes": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorotetradecanoicopfteda": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorotridecanoico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorotridecansolfonico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorottanoicopfoa": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluorottansolfonicopfos": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroundecanoicopfuna": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "acidoperfluoroundecansolfonico": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "alachlor": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "alluminioal": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "ametrina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "ammonionh4": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "anilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "antimoniosb": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "antiparassitaritotali": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "antracene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "arsenicoas": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "atrazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "atrazinadesetil": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "atrazinadesetildesisopropil": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "atrazinadesisopropil": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "barioba": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "bentazonelcms": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "benzene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "benzidina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "benzoaantracene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "benzoapirene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "benzobfluorantene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "benzoghiperilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "benzokfluorantene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "borob": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "boscalid": {
+      "unit": "µg/l",
+      "support": [
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "bromacile": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "bromatibro3": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2"
+      ],
+      "alternates": []
+    },
+    "bromodiclorometano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "bromoformio": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3"
+      ],
+      "alternates": []
+    },
+    "cadmiocd": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "calcioca": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "carbonioorganicototaletoc": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "cc6o4": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "cianazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "cloraticlo3": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "cloritoclo2": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "clororesiduoclorores": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "cloroformio": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "clorurocl": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "coliformitotali": {
+      "unit": "UFC/100ml",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "conduttivitaa20c": {
+      "unit": "µS/cm",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "conteggiodellecoloniea22c": {
+      "unit": "UFC/1ml",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "crisene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "cromototalecr": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "desetilterbutilazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "desmetrina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "dibenzoahantracene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "dibromoclorometano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "difenilammina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "dimetridazolo": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "durezzatotale": {
+      "unit": "F",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "enterococchi": {
+      "unit": "UFC/100ml",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "escherichiacoliecoli": {
+      "unit": "UFC/100ml",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "etilbenzene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "fenantrene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "ferrofe": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "fluorantene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "fluorene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "fluorurof": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "fosforop2o5": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "freon113112tricloro122trifluoroetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "freon12": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "freon141": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "genx": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "idrocarburipolicicliciaromatici": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "imidacloprid": {
+      "unit": "µg/l",
+      "support": [
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "indeno123cdpirene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "legionellapneumophila": {
+      "unit": "UFC/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "legionellaspp": {
+      "unit": "UFC/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "lm6": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "mtoluidina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "magnesiomg": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "manganesemn": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "mebicar": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "mercuriohg": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "metilcloroformio111tricloroetano": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "metilterbutileteremtbe": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "metolaclor": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "mmttd5metil2metiltio134tiodiazolo": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "molinate": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "monoclorammina": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "netilanilina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "naftalene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "nichelni": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "nitratocomeno3": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "nitritocomeno2": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "otoluidina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "oxilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "oxadiazon": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "ptoluidina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "pfds": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "piombopb": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "pirene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "potassiok": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "prometrina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "propazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "ramecu": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "residuoseccoa180c": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "sebutilazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "seleniose": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "silicesio2percalcolo": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "simazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "sodiona": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "solfatoso4": {
+      "unit": "mg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "solventitotali": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "sommadipfas": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3"
+      ],
+      "alternates": []
+    },
+    "stirene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tceptris2cloroetilfosfato": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "terbutilazina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "terbutrina": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tetracloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tetracloroetilenetricloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tetraclorurodicarbonio": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tmcptrismonocloroisopropilfosfato": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "toluene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "torbidita": {
+      "unit": "NTU",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "trialometanitotale": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "tricloroetilene": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "triclorofluorometanofreon11": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "uraniou": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "vanadiov": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    },
+    "zincozn": {
+      "unit": "µg/l",
+      "support": [
+        "2024-q1",
+        "2024-q2",
+        "2024-q3",
+        "2025-q3",
+        "2025-q4"
+      ],
+      "alternates": []
+    }
+  }
+}
