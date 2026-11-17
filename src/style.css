@@ -58,3 +58,31 @@
 .neighborhood-map{margin-top:22px;min-height:360px}
 @media(max-width:1240px){.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.correlation-list{grid-template-columns:1fr}.signals-lab .config-link{margin-left:auto}}
 @media(max-width:700px){.signals-lab .stats{grid-template-columns:repeat(2,1fr)}.city-chip{min-width:125px;padding:11px;flex:1 1 135px}.city-chip span{font-size:9px}.signals-lab .panel-head{flex-wrap:wrap}.signals-lab .table-wrap{margin:0 -6px}.cluster-filters{gap:10px}.cluster-chart{height:340px}.detail-grid{grid-template-columns:1fr 1fr;gap:8px}.detail-tile{padding:11px}.detail-tile>b{font-size:13px}.neighborhood-map{min-height:300px}.signals-lab .stat strong{font-size:25px}}
+
+/* City drilldown and curated quick-select clusters */
+.selected-city-panel{scroll-margin-top:18px;border:1px solid color-mix(in srgb,var(--blue) 35%,var(--border));border-radius:16px;padding:22px;margin:14px 0 24px;background:color-mix(in srgb,var(--blue) 3%,var(--surface));box-shadow:0 8px 25px #1d365009}
+.selected-city-header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.selected-city-header h2{font-size:22px!important;margin:0 0 7px!important;letter-spacing:-.7px}
+.selected-city-header p{color:var(--muted);font-size:11px;line-height:1.6;margin:0}
+.selected-city-header .eyebrow{margin-bottom:9px}
+.city-kpis{display:flex;gap:16px;flex-wrap:wrap;margin:17px 0 15px;color:var(--muted);font-size:11px}
+.city-kpis span{display:flex;align-items:center;gap:5px}
+.city-kpis b{font-size:14px;color:var(--ink)}
+.city-detail-tabs{display:flex;gap:4px;background:var(--bg);border:1px solid var(--border);padding:4px;border-radius:10px;width:fit-content;margin-bottom:14px}
+.city-detail-tabs button{font-size:11px;border:0;color:var(--muted);background:transparent;border-radius:7px;padding:10px 13px;cursor:pointer}
+.city-detail-tabs button.selected{color:var(--ink);background:var(--surface);box-shadow:0 2px 6px #132a3712;font-weight:700}
+.city-result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.city-result-card{border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--ink);padding:15px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:9px;min-width:0;transition:border-color .15s,box-shadow .15s}
+.city-result-card:hover,.city-result-card:focus-visible{border-color:var(--blue);box-shadow:0 4px 16px #3986d01a;outline:0}
+.city-result-card .label{align-self:start}
+.city-result-card b{font-size:12px;font-weight:600;line-height:1.4}
+.city-result-card strong{font-size:18px;letter-spacing:-.3px;font-variant-numeric:tabular-nums}
+.city-result-card span:not(.label),.city-result-card small{color:var(--muted);font-size:11px;line-height:1.45}
+.city-result-card .city-card-action{color:var(--blue)!important;font-weight:700;margin-top:auto;padding-top:8px}
+.city-no-signals{padding:22px;background:var(--surface);color:var(--muted);border:1px dashed var(--border);border-radius:12px;line-height:1.7;font-size:12px}
+.cluster-category-scroll{display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding:3px 0 13px;scrollbar-width:thin}
+.cluster-pill{border:1px solid var(--border);background:var(--surface);border-radius:100px;color:var(--muted);padding:10px 13px;white-space:nowrap;font-size:11px;cursor:pointer;flex-shrink:0}
+.cluster-pill:hover,.cluster-pill-active{color:var(--blue);border-color:var(--blue);background:color-mix(in srgb,var(--blue) 7%,var(--surface))}
+#esplora-cluster{scroll-margin-top:18px}
+@media(max-width:1200px){.city-result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.selected-city-panel{padding:14px;margin:12px 0 18px}.selected-city-header{flex-wrap:wrap}.selected-city-header h2{font-size:20px!important}.selected-city-header .outline{width:auto}.city-kpis{gap:9px}.city-kpis span{flex:1 1 130px}.city-result-grid{grid-template-columns:1fr}.city-result-card{padding:12px;gap:7px}.city-result-card strong{font-size:17px}.cluster-category-scroll{margin-right:-10px;padding-right:10px}.cluster-pill{padding:10px 12px}.city-detail-tabs{width:100%}.city-detail-tabs button{flex:1}}
