@@ -45,6 +45,65 @@ def csv_rows(content):
     return parsed, encoding_used, delimiter
 
 
+REF_UNITS = json.loads((Path(__file__).resolve().parent / "unit_reference.json").read_text(encoding="utf-8"))["unit_by_parameter"]
+
+def standard_unit(value):
+    s = str(value or "").strip()
+    n = normalize(s)
+    if s.lower() in ("æg/l", "µg/l", "μg/l", "ug/l") or n in ("ugl", "gl"):
+        return "µg/l"
+    if n == "mgl":
+        return "mg/l"
+    if n in ("uscm", "uscm20c", "uscmat20c"):
+        return "µS/cm"
+    if n == "ufc100ml":
+        return "UFC/100ml"
+    if n in ("ufc1ml", "ufcml"):
+        return "UFC/1ml"
+    if n == "ufc1l":
+        return "UFC/l"
+    if n == "ntu":
+        return "NTU"
+    if n == "f":
+        return "F"
+    if n in ("unitaph", "ph"):
+        return "unità pH"
+    if n == "bql":
+        return "Bq/l"
+    return s
+
+def source_column_label(value):
+    name = str(value).strip()
+    if name.endswith("-"):
+        name = name[:-1].strip()
+    elif "-" in name:
+        label, suffix = name.rsplit("-", 1)
+        unit = standard_unit(suffix)
+        if normalize(suffix) in ("mgl","ugl","gl","uscm","uscm20c","uscmat20c","ufc100ml","ufc1ml","ufc1l","ntu","f","unitaph","bql"):
+            return label.strip(), unit
+    if normalize(name).startswith("conduttivit") and "20" in name:
+        return "Conduttività a 20° C", None
+    return name, None
+
+def unit_offset(labels, unit_row):
+    candidates = []
+    for offset in range(-5, 6):
+        matched = 0
+        for index, label in enumerate(labels):
+            name, explicit = source_column_label(label)
+            expected = REF_UNITS.get(normalize(name))
+            unit_index = index + offset
+            if not expected or unit_index < 0 or unit_index >= len(unit_row):
+                continue
+            if standard_unit(unit_row[unit_index]) == standard_unit(expected["unit"]):
+                matched += 1
+        candidates.append((matched, offset))
+    best = sorted(candidates, key=lambda x: (x[0], x[1] == 0), reverse=True)[0]
+    original = next(score for score, offset in candidates if offset == 0)
+    if best[1] != 0 and best[0] >= 20 and best[0] >= original + 8:
+        return best[1], best[0], original
+    return 0, original, original
+
 def read_schema(rows, pid):
     labels = units = limits = None
     for row in rows[:12]:
@@ -71,15 +130,17 @@ def read_schema(rows, pid):
     city_index = next((i for i, v in enumerate(labels) if normalize(v) == "comune"), 1)
     address_index = next((i for i, v in enumerate(labels) if normalize(v) == "indirizzo"), 2)
     sample_index = next((i for i, v in enumerate(labels) if "codicecampione" in normalize(v)), 3)
+    offset, score, original_score = unit_offset(labels, units)
+    print(f"HEADER_ALIGNMENT {pid}: offset={offset} score={score} baseline={original_score}", flush=True)
     fields = []
     used = set()
     for i, name in enumerate(labels):
         if i in (0, city_index, address_index, sample_index):
             continue
-        name = str(name).strip()
+        name, explicit_unit = source_column_label(name)
         if not name:
             continue
-        unit = str(at(units, i)).strip()
+        unit = standard_unit(explicit_unit if explicit_unit is not None else at(units, i + offset))
         id = field_id(name, unit)
         if id in used:
             id = hashlib.sha1((id + str(i)).encode()).hexdigest()[:12]
