@@ -85,3 +85,53 @@ Potential future extensions: authoritative point-level coordinates, revised lega
 - [CAP quarterly URL registry](scripts/sources.json), verified against the HTML `data-link` attributes on the CAP website.
 - [RP92 municipality data](https://github.com/RP92/comuni-italiani), original ISTAT and Garda Informatica sources, CC BY 4.0.
 - [scikit-learn IsolationForest reference](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html).
+
+
+## Independent quarter normalization (v2)
+
+The archival data pipeline is now an explicit **two-stage model**:
+
+1. `scripts/pipeline.py` reads the official CSV for each quarter and writes a self-contained `public/data/normalized/YYYY-qN/schema.json` plus compressed line-delimited `observations.jsonl.gz`. Both original CAP files are archived under `public/data/raw/` with SHA-256 checksums. Every record retains the raw concentration text and the censoring flag.
+2. `scripts/assemble.py` reads **only validated quarter normalizations**, builds `public/data/combined/observations.jsonl.gz`, the public data dictionary/manifest, weighted quarterly trends, municipality latest-reading indexes and independent signal flags. The React app loads individual parameter shards rather than the whole combined archive.
+
+A newly published malformed quarter is **quarantined** in `public/data/pipeline_quality.json`. If a previously valid quarter's source changes into an incompatible format, the last committed valid normalizer is reused (and the issue logged). This preserves historic datasets rather than failing the whole website.
+
+A CI quality gate, `scripts/validate_data.py`, checks all committed quarterly snapshots, source provenance, reconciled counts and a specific censorship regression for arsenic (Abbiategrasso, Via Pasubio, 5 February 2026: `< 1 µg/l`, CAP source metadata limit 10 µg/l). Exact ratios are **never** fabricated for below-quantification values.
+
+## Latest signals, customizable clusters and geography
+
+The **Segnali & Cluster** dashboard draws from `data/city_latest.json`: for each municipality and parameter, it selects the **worst-ranking sample on the newest measurement date**, preserving the number of samples from that day; it does not assert that one sample represents every location in a town.
+
+Two distinct classes of potential issues:
+- **Source-threshold signal:** above or near a numeric threshold published by CAP for that **specific quarter**, with the caveat that the site has **not independently verified the legal applicability** of every published limit. The 80% "near" threshold is an analytical convention.
+- **Historical statistical anomaly:** median / median-absolute-deviation (MAD) robust z-score of the latest *quantified* measurement against earlier quantified observations of the *same municipality and same parameter*. The number of past observations must exceed the minimum configured in JSON. A statistical anomaly is not a legal exceedance and does not establish a public-health risk.
+
+The **limit detail** includes the original CAP value, period-specific threshold and relative difference. When a measurement is left-censored (`< 1` and limit 10, for example), the UI reports **less than 10% of the limit**, and **more than 90% below**. It never displays an exact 10% ratio.
+
+Clusters are curated thematic lists, not inferred causal or geological groupings. Edit `public/config/clusters.json` in the repository to change groups, included parameter labels, anomaly sensitivity and neighborhood radii. The UI fetches this JSON at runtime. The graph compares multiple parameters using either an **index of 100** (the first positive quantified quarterly mean) or **percent of each parameter's own published limit**, never overlaying incomparable physical units on a single numerical axis. Pairwise Pearson correlations are shown only for sufficient *matching* quarterly averages; association does not imply causal commonality.
+
+Neighbor comparisons use **approximate municipality coordinates**, with a user-selectable radius measured **as-the-crow-flies**. They find comparable indicators on the **same parameter** in nearby municipalities, based on the latest CAP quarter. They do not use water-distribution network topology or claim that neighboring towns share a water source.
+
+### Configuring a cluster
+
+See [public/config/clusters.json](public/config/clusters.json):
+
+```json
+{
+  "id": "personalizzato",
+  "label": "Il mio cluster",
+  "description": "Parametri da visualizzare insieme",
+  "parameters": [
+    "Arsenico (As)",
+    "Nitrato (come NO3)",
+    "Somma di PFAS"
+  ]
+}
+```
+
+This example is one element inside the JSON `clusters` array, not a complete standalone configuration file. The app displays when a configured label has no exact corresponding source parameter.
+
+### Important interpretation
+
+A red dot or a high z-score **must not** be interpreted as certification that the local water is unsafe. Official regulatory conclusions, point-level water networks and source-specific legal references would require additional independent validation.
+
