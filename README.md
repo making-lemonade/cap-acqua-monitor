@@ -27,7 +27,7 @@ The ETL archives both downloaded originals byte-for-byte in **public/data/raw/**
 
 ## Architecture
 
-\`\`\`
+```
 Gruppo CAP official quarterly CSV + JSON (2024–2026)
     ├── Original bytes: public/data/raw/<year>-q<quarter>.{json,csv}
     └── Python CSV-first normalization: scripts/etl_csv_all.py
@@ -43,7 +43,7 @@ Gruppo CAP official quarterly CSV + JSON (2024–2026)
                  └── React + TypeScript / Recharts + Leaflet
                                     ↓
                                GitHub Pages
-\`\`\`
+```
 
 ## Why this demonstrates senior BI / data engineering skills
 
@@ -51,7 +51,7 @@ Gruppo CAP official quarterly CSV + JSON (2024–2026)
 
 **Semantic modeling:** Measurements are standardized without merging distinct parameters with different names or units. Where CAP places units in shifted CSV header columns, the parser documents column alignment and repairs only confidently cross-verified metadata using [unit_reference.json](scripts/unit_reference.json); it never rescales numerical values. A threshold comes from the **source period** and is not applied retroactively to older samples.
 
-**Data quality:** Several supplied CAP JSON exports lose fields or collapse semicolon-delimited rows. For that reason **the CSV files are the normalization source** and both published originals are archived byte-for-byte. Values such as \`<0,01\` are **left-censored**, NOT zero or the exact upper bound. They are excluded from numerical averages, while remaining visible in the underlying data. Parsing errors abort a full-history build rather than silently advertising incomplete coverage.
+**Data quality:** Several supplied CAP JSON exports lose fields or collapse semicolon-delimited rows. For that reason **the CSV files are the normalization source** and both published originals are archived byte-for-byte. Values such as `<0,01` are **left-censored**, NOT zero or the exact upper bound. They are excluded from numerical averages, while remaining visible in the underlying data. Parsing errors abort a full-history build rather than silently advertising incomplete coverage.
 
 **Performance:** Quarterly observations are statically sharded per parameter; charts use precomputed weighted aggregates. The visitor never downloads all original archives to open the dashboard.
 
@@ -63,25 +63,25 @@ Gruppo CAP official quarterly CSV + JSON (2024–2026)
 
 Python 3.12+ and Node.js 22+:
 
-\`\`\`bash
+```bash
 python scripts/etl_csv_all.py
 python -m pip install -r scripts/requirements.txt
 python scripts/ml.py
 npm install
 npm run dev
-\`\`\`
+```
 
-Production build: \`npm run build\`.
+Production build: `npm run build`.
 
 ## CI/CD
 
-The [GitHub Actions workflow](.github/workflows/deploy.yml) handles source download, ETL, model generation, build and Pages deployment. It runs automatically on changes to \`main\` and weekly for source refresh. The originals and normalized outputs are retained in \`public/data/\` and are published as static files.
+The [GitHub Actions workflow](.github/workflows/deploy.yml) handles source download, ETL, model generation, build and Pages deployment. It runs automatically on changes to `main` and weekly for source refresh. The originals and normalized outputs are retained in `public/data/` and are published as static files.
 
 Potential future extensions: authoritative point-level coordinates, revised legal thresholds and longitudinal parameter harmonization with documented mappings. None are presented as already implemented.
 
 ## Sources and verification
 
 - [Official CAP water-quality open data](https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua), accessed 17 November 2026.
-- [CAP quarterly URL registry](scripts/sources.json), verified against the HTML \`data-link\` attributes on the CAP website.
+- [CAP quarterly URL registry](scripts/sources.json), verified against the HTML `data-link` attributes on the CAP website.
 - [RP92 municipality data](https://github.com/RP92/comuni-italiani), original ISTAT and Garda Informatica sources, CC BY 4.0.
 - [scikit-learn IsolationForest reference](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html).
