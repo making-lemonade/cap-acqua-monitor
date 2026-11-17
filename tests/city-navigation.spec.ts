@@ -1,7 +1,10 @@
 import {test,expect} from '@playwright/test';
 
 test('city selection reveals real values and opens related cluster on mobile and desktop',async({page})=>{
- await page.goto('/cap-acqua-monitor/');
+ await page.route('https://fonts.googleapis.com/**',r=>r.abort());
+ await page.route('https://fonts.gstatic.com/**',r=>r.abort());
+ await page.route('https://tile.openstreetmap.org/**',r=>r.abort());
+ await page.goto('/cap-acqua-monitor/',{waitUntil:'domcontentloaded'});
  await expect(page).toHaveTitle(/Aqua Intelligence/);
  await page.getByRole('button',{name:/Segnali & Cluster/}).click();
  const firstCity=page.locator('.city-chip').first();
