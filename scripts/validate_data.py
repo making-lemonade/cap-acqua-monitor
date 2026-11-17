@@ -19,6 +19,35 @@ def main():
     assert snapshot["latest_period"]==periods[-1]["id"]
     assert latest["latest_period"]==periods[-1]["id"]
     assert len({f["key"] for f in manifest["fields"]})==len(manifest["fields"])
+    # Every municipality must have an independently fetchable small detail payload.
+    city_paths=latest.get("city_files", {})
+    assert set(city_paths)==set(manifest["cities"]), "City detail shards missing or extra"
+    indexed_signals={(e["city"],e["parameter"]) for e in latest["events"]}
+    for city,relative in city_paths.items():
+        assert relative.startswith("data/city_latest/") and ".." not in relative
+        detail=load(ROOT/"public"/relative)
+        assert detail["city"]==city
+        assert detail["latest_period"]==latest["latest_period"]
+        assert detail["events"], f"No detailed readings for {city}"
+        assert all(e["city"]==city for e in detail["events"])
+        for e in detail["events"]:
+            if e["period"]==latest["latest_period"] and e["indicator"]!="not_flagged":
+                assert (city,e["parameter"]) in indexed_signals
+    # Curated cluster parameter labels must match a real normalized CAP parameter.
+    cfg=load(ROOT/"public"/"config"/"clusters.json")
+    def normal(label):
+        import unicodedata
+        import re
+        value=unicodedata.normalize("NFKD",label).encode("ascii","ignore").decode("ascii")
+        return re.sub(r"[^a-z0-9]","",value.lower())
+    names={normal(f["name"]) for f in manifest["fields"]}
+    assert len(cfg["clusters"])>=10, "Missing curated thematic groups"
+    assert len({group["id"] for group in cfg["clusters"]})==len(cfg["clusters"])
+    for group in cfg["clusters"]:
+        assert group["parameters"], f"Empty cluster: {group['id']}"
+        for name in group["parameters"]:
+            assert normal(name) in names, f"Unknown CAP cluster label: {name}"
+    print("CITY_AND_CLUSTER_GATE_PASS",len(city_paths),"city files",len(cfg["clusters"]),"clusters",flush=True)
     for p in periods:
         period=p["id"]
         folder=DATA/"normalized"/period
