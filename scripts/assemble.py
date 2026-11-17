@@ -8,6 +8,7 @@ quarterly trends and defensible latest municipality signals.
 from __future__ import annotations
 import gzip
 import json
+import hashlib
 import math
 import statistics
 from collections import defaultdict
@@ -136,6 +137,18 @@ def main():
           "statistical":signal
         })
     latest.sort(key=lambda x:(x["city"],x["parameter"]))
+    # Small overview index plus one fast, independently fetchable file per city.
+    # Mobile visitors no longer download the ~8.6 MB global observation snapshot.
+    city_details=defaultdict(list)
+    for row in latest:
+        city_details[row["city"]].append(row)
+    city_files={}
+    for city,items in city_details.items():
+        city_id=hashlib.sha256(city.encode("utf-8")).hexdigest()[:16]
+        city_files[city]=f"data/city_latest/{city_id}.json"
+        save_json(OUT/"city_latest"/f"{city_id}.json",{
+            "city":city,"latest_period":latest_pid,"events":items
+        })
     alerts=[x for x in latest if x["period"]==latest_pid and x["indicator"]!="not_flagged"]
     alerts.sort(key=lambda x:({"source_above_limit":0,"source_near_limit":1,"statistical_high":2,"statistical_low":3}.get(x["indicator"],4),
                               x["city"],x["name"]))
@@ -144,7 +157,7 @@ def main():
                       "A municipality may be sampled at different points on different dates.",
                       "Source threshold exceedances and historical statistical outliers are distinct concepts.",
                       "The statistical baseline uses prior quantified results from the same municipality and parameter only."]})
-    save_json(OUT/"latest_signals.json",{"latest_period":latest_pid,"events":alerts,
+    save_json(OUT/"latest_signals.json",{"latest_period":latest_pid,"city_files":city_files,"events":alerts,
              "statistical_method":"median and MAD robust z-score","minimum_history":min_hist,
              "threshold_abs_z":z_threshold})
     geography=reference_geography(cities)
