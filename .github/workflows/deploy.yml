@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Inspect CAP source schemas
+        run: python scripts/probe_schema.py
       - name: Ingest every available CAP quarterly dataset
         run: python scripts/etl_all.py
       - name: Install reproducible ML environment
