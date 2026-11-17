@@ -14,6 +14,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from etl_all import OUT, TRENDS, QUARTERS, RAW, GEO_URL, save_json, reference_geography, agg_update, empty_agg
+from gziputil import deterministic_text_gzip
 
 NORMALIZED=OUT/"normalized"
 CONFIG=Path(__file__).resolve().parents[1]/"public"/"config"/"clusters.json"
@@ -71,7 +72,7 @@ def main():
     mergedfile=COMBINED/"observations.jsonl.gz"
     temp=COMBINED/"observations.jsonl.gz.part"
     total=0
-    with gzip.open(temp,"wt",encoding="utf-8",compresslevel=6) as merged:
+    with deterministic_text_gzip(temp,compresslevel=6) as merged:
         for part,path in sources:
             pid=part["period"]
             print("ASSEMBLE_PERIOD",pid,flush=True)
