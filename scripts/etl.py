@@ -3,6 +3,7 @@ import datetime as dt
 import hashlib
 import json
 import re
+import unicodedata
 import urllib.request
 from pathlib import Path
 
@@ -11,6 +12,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 BASE = "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/i-trimestre-2026/"
 JSON_URL = BASE + "ACQUEDOTTO%20I%20TRIMESTRE%202026.json"
 CSV_URL = BASE + "Acquedotto%20I%20TRIMESTRE%202026.csv"
+GEO_URL = "https://raw.githubusercontent.com/RP92/comuni-italiani/main/data/comuni.json"
 
 def download(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 AquaIntelligenceOpenData"})
@@ -41,6 +43,32 @@ def parse_date(raw):
         except ValueError:
             pass
     return None
+
+def normalize_place(name):
+    text = unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"[^A-Z0-9]", "", text.upper())
+
+def municipality_coordinates(city_names):
+    """Municipality reference points; NOT locations of aqueduct sampling points."""
+    try:
+        places = json.loads(download(GEO_URL))
+        candidates = {}
+        for p in places:
+            if not isinstance(p, dict) or p.get("regione", {}).get("nome") != "Lombardia":
+                continue
+            coords = p.get("coordinate")
+            if not isinstance(coords, dict):
+                continue
+            lat, lon = coords.get("lat"), coords.get("lng")
+            if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)):
+                continue
+            candidates[normalize_place(p.get("nome", ""))] = {"lat": lat, "lng": lon}
+        matched = {city: candidates[normalize_place(city)] for city in city_names if normalize_place(city) in candidates}
+        print("municipality coordinates matched:", len(matched), "of", len(city_names))
+        return matched
+    except Exception as exc:
+        print("Municipality location enrichment unavailable:", exc)
+        return {}
 
 def main():
     raw = download(JSON_URL)
@@ -105,15 +133,16 @@ def main():
             limit = field["source_limit"]
             n = val["value"]
             status = "unknown"
-            if limit is not None and limit > 0:
+            if limit is not None and limit >= 0:
                 if val["censored"]:
                     status = "under_limit" if n <= limit else "unknown"
                 else:
-                    status = "above_limit" if n > limit else ("near_limit" if n >= limit * .8 else "under_limit")
+                    status = "above_limit" if n > limit else ("near_limit" if limit > 0 and n >= limit * .8 else "under_limit")
             data.append({"city": city, "date": date, "address": str(r.get("Column3", "") or "").strip(), "sample": str(r.get("Column4", "") or "").strip(), "parameter": field["key"], "value": n, "censored": val["censored"], "status": status})
     if not data:
         raise RuntimeError("No measurements found. Verify date format and CAP source schema")
-    result = {"metadata": {"source": JSON_URL, "csv_source": CSV_URL, "source_sha256": hashlib.sha256(raw).hexdigest(), "updated_utc": dt.datetime.now(dt.timezone.utc).isoformat(), "period_label": "I trimestre 2026", "notes": ["Limits copied from CAP dataset metadata; legal applicability has not been independently verified", "Results expressed as <x are censored values, not measured x", "Date parsing uses US-first format; verify ambiguous dates with source", "No spatial coordinates published in this source: point locations are not inferred"]}, "fields": fields, "cities": sorted(cities), "samples": data}
+    geolocations = municipality_coordinates(cities)
+    result = {"metadata": {"source": JSON_URL, "csv_source": CSV_URL, "source_sha256": hashlib.sha256(raw).hexdigest(), "updated_utc": dt.datetime.now(dt.timezone.utc).isoformat(), "period_label": "I trimestre 2026", "notes": ["Limits copied from CAP dataset metadata; legal applicability has not been independently verified", "Results expressed as <x are censored values, not measured x", "Source dates are formatted MM/DD/YYYY, verified against examples such as 03/25/2026", "Map coordinates show approximate municipality locations from a separate third-party dataset, not water sampling points"]}, "geography": {"source": GEO_URL, "license": "CC BY 4.0", "credit": "RP92/comuni-italiani; ISTAT and Garda Informatica", "locations": geolocations}, "fields": fields, "cities": sorted(cities), "samples": data}
     (OUT / "dashboard.json").write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print("records", len(rows), "cities", len(cities), "measurements", len(data), "parameters", len(fields))
 
