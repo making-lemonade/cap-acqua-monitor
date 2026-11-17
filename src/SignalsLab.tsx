@@ -132,9 +132,9 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   });
   return()=>ctrl.abort();
  },[city,snapshot]);
- const chosenCluster:Cluster|undefined=clusterId==='singolo'
+ const chosenCluster=useMemo<Cluster|undefined>(()=>clusterId==='singolo'
   ?{id:'singolo',label:'Parametro individuale',description:'Parametro non assegnato a un cluster tematico. Sono disponibili storico, limiti e confronto territoriale senza inventare collegamenti.',parameters:[manifest.fields.find(f=>f.key===focusKey)?.name||'Parametro']}
-  :(config?.clusters.find(c=>c.id===clusterId)||config?.clusters[0]);
+  :(config?.clusters.find(c=>c.id===clusterId)||config?.clusters[0]),[clusterId,config,manifest.fields,focusKey]);
  const clusterFields=useMemo(()=>{
   if(!chosenCluster)return[];
   if(chosenCluster.id==='singolo')return manifest.fields.filter(f=>f.key===focusKey).slice(0,1);
