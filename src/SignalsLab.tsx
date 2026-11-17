@@ -212,11 +212,11 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
    const pos=manifest.geography.locations[e.city];
    if(!pos)continue;
    const distance=distanceKm(origin,pos);
-   if(distance<=radius)found.push({e,distance,similar: selectedObservation?
+   if(distance<=radius)found.push({e,distance,similar: selectedObservation?.period===latestPeriod?
        signalGroup(e.indicator)===signalGroup(selectedObservation.indicator)&&signalGroup(e.indicator)!=='none':false});
   }
   return found.sort((a,b)=>Number(b.similar)-Number(a.similar)||a.distance-b.distance);
- },[manifest.geography.locations,newest,city,currentKey,radius,selectedObservation]);
+ },[manifest.geography.locations,newest,city,currentKey,radius,selectedObservation,latestPeriod]);
  const mapPoints=useMemo(()=>{
   if(city===all)return[];
   const origin=manifest.geography.locations[city];
