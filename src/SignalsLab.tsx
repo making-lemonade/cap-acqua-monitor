@@ -1,4 +1,4 @@
-import React,{useEffect,useMemo,useState,useCallback} from 'react';
+import React,{useEffect,useMemo,useState,useCallback,useRef} from 'react';
 import{LineChart,Line,ResponsiveContainer,CartesianGrid,XAxis,YAxis,Tooltip,Legend}from'recharts';
 import{Activity,AlertTriangle,BrainCircuit,ChevronDown,Info,MapPin,SlidersHorizontal,ShieldAlert}from'lucide-react';
 import NearbyMap,{type NearbyPoint} from './NearbyMap';
@@ -21,7 +21,8 @@ type Observation={
  limit_raw:string;limit_percent:number|null;status:string;
  indicator:string;statistical:Statistical|null;
 };
-type Snapshot={latest_period:string;events:Observation[];notes:string[]};
+type Snapshot={latest_period:string;city_files:Record<string,string>;events:Observation[];notes?:string[]};
+type CitySnapshot={city:string;latest_period:string;events:Observation[]};
 type Trend={period:string;city:string;count:number;measured:number;avg:number|null};
 type Props={manifest:ClusterManifest;city:string;onCitySelect:(city:string)=>void};
 const format=(n:number,max=2)=>n.toLocaleString('it-IT',{maximumFractionDigits:max});
@@ -87,8 +88,15 @@ function correlation(x:number[],y:number[]):number|null{
 export default function SignalsLab({manifest,city,onCitySelect}:Props){
  const[config,setConfig]=useState<Config|null>(null);
  const[snapshot,setSnapshot]=useState<Snapshot|null>(null);
+ const[cityDetails,setCityDetails]=useState<Observation[]>([]);
+ const[cityBusy,setCityBusy]=useState(false);
+ const[cityError,setCityError]=useState('');
+ const[detailMode,setDetailMode]=useState<'signals'|'all'>('signals');
+ const[showAllCityRows,setShowAllCityRows]=useState(false);
+ const cityDetailRef=useRef<HTMLDivElement>(null);
+ const clusterPanelRef=useRef<HTMLElement>(null);
  const[error,setError]=useState('');
- const[clusterId,setClusterId]=useState('metalli');
+ const[clusterId,setClusterId]=useState('pfas');
  const[focusKey,setFocusKey]=useState('');
  const[radius,setRadius]=useState(15);
  const[metric,setMetric]=useState<'index'|'limit'>('index');
@@ -101,12 +109,29 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   const ctrl=new AbortController();
   Promise.all([
     fetch(import.meta.env.BASE_URL+'config/clusters.json',{signal:ctrl.signal}).then(r=>{if(!r.ok)throw Error('Configurazione cluster non disponibile');return r.json()}),
-    fetch(import.meta.env.BASE_URL+'data/city_latest.json',{signal:ctrl.signal}).then(r=>{if(!r.ok)throw Error('Riepilogo dei valori recenti non disponibile');return r.json()})
+    fetch(import.meta.env.BASE_URL+'data/latest_signals.json',{signal:ctrl.signal}).then(r=>{if(!r.ok)throw Error('Riepilogo dei valori recenti non disponibile');return r.json()})
   ]).then(([a,b]:[Config,Snapshot])=>{
     setConfig(a);setSnapshot(b);setRadius(a.analysis.default_radius_km);
   }).catch(e=>{if(!ctrl.signal.aborted)setError(String(e))});
   return()=>ctrl.abort();
  },[]);
+ useEffect(()=>{
+  const ctrl=new AbortController();
+  setCityDetails([]);setCityError('');
+  if(city==='Tutti i comuni'||!snapshot){setCityBusy(false);return()=>ctrl.abort()}
+  const path=snapshot.city_files?.[city];
+  if(!path){setCityBusy(false);setCityError('Nessun dettaglio normalizzato trovato per questo comune.');return()=>ctrl.abort()}
+  setCityBusy(true);
+  fetch(import.meta.env.BASE_URL+path,{signal:ctrl.signal}).then(r=>{
+   if(!r.ok)throw Error('Archivio del comune non disponibile ('+r.status+')');
+   return r.json();
+  }).then((d:CitySnapshot)=>{
+   if(!ctrl.signal.aborted){setCityDetails(d.events);setCityBusy(false)}
+  }).catch(e=>{
+   if(!ctrl.signal.aborted){setCityError(String(e.message));setCityBusy(false)}
+  });
+  return()=>ctrl.abort();
+ },[city,snapshot]);
  const chosenCluster=config?.clusters.find(c=>c.id===clusterId)||config?.clusters[0];
  const clusterFields=useMemo(()=>{
   if(!chosenCluster)return[];
@@ -127,7 +152,14 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
  const latestPeriod=snapshot?.latest_period||manifest.periods[manifest.periods.length-1]?.id;
  const events=snapshot?.events||[];
  const newest=useMemo(()=>events.filter(e=>e.period===latestPeriod),[events,latestPeriod]);
- const chosenCityEvents=useMemo(()=>events.filter(e=>e.city===city && (showPrevious||e.period===latestPeriod)),[events,city,latestPeriod,showPrevious]);
+ const chosenCityEvents=useMemo(()=>cityDetails.filter(e=>showPrevious||e.period===latestPeriod),[cityDetails,latestPeriod,showPrevious]);
+ const citySignals=useMemo(()=>newest.filter(e=>e.city===city),[newest,city]);
+ const cityCurrent=useMemo(()=>cityDetails.filter(e=>e.period===latestPeriod),[cityDetails,latestPeriod]);
+ const cityDisplay=useMemo(()=>{
+  const records=detailMode==='signals'?citySignals:(cityCurrent.length?cityCurrent:cityDetails);
+  const statusOrder=(e:Observation)=>e.indicator==='source_above_limit'?0:e.indicator==='source_near_limit'?1:e.indicator.startsWith('statistical')?2:3;
+  return [...records].sort((a,b)=>statusOrder(a)-statusOrder(b)||a.name.localeCompare(b.name));
+ },[citySignals,cityDetails,cityCurrent,detailMode]);
  const significant=useMemo(()=>{
   let x=newest.filter(e=>e.indicator!=='not_flagged');
   if(city!==all)x=x.filter(e=>e.city===city);
@@ -149,8 +181,8 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
  },[newest]);
  const selectedObservation=useMemo(()=>{
   if(city===all||!currentKey)return null;
-  return events.find(e=>e.city===city&&e.parameter===currentKey)??null;
- },[events,city,currentKey]);
+  return cityDetails.find(e=>e.parameter===currentKey)??null;
+ },[cityDetails,city,currentKey]);
  useEffect(()=>{
   if(!clusterFields.length)return;
   const controller=new AbortController();
@@ -231,7 +263,21 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   }
   return points;
  },[manifest.geography.locations,city,nearby,selectedObservation]);
- const selectCity=useCallback((c:string)=>onCitySelect(c),[onCitySelect]);
+ const chooseParameter=useCallback((e:Observation,scrollToChart=false)=>{
+  const suggested=config?.clusters.find(group=>group.parameters.some(name=>normal(name)===normal(e.name)));
+  if(suggested){setClusterId(suggested.id);setFocusKey(e.parameter)}
+  else {
+   // No silent misclassification: a source parameter without a curated group stays ungrouped.
+   setFocusKey('');
+  }
+  if(scrollToChart)requestAnimationFrame(()=>clusterPanelRef.current?.scrollIntoView({behavior:'smooth',block:'start'}));
+ },[config]);
+ const selectCity=useCallback((c:string)=>{
+  onCitySelect(c);setClusterOnly(false);setDetailMode('signals');setShowAllCityRows(false);
+  const first=newest.find(e=>e.city===c);
+  if(first)chooseParameter(first,false);
+  if(c!=='Tutti i comuni')requestAnimationFrame(()=>cityDetailRef.current?.scrollIntoView({behavior:'smooth',block:'start'}));
+ },[onCitySelect,newest,chooseParameter]);
  if(error&&!snapshot)return <div className="notice"><Info size={18}/>{error} · i dati precedenti restano accessibili nelle altre sezioni.</div>;
  if(!config||!snapshot)return <section className="panel"><h2>Caricamento degli indicatori recenti…</h2></section>;
  return <div className="signals-lab">
@@ -245,14 +291,25 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   <section className="panel">
    <div className="panel-head"><div><h2>Comuni con segnali nell'ultima campagna</h2><p>Ordinati per quantità di parametri da approfondire, non per potabilità</p></div><span className="tag">ULTIMI DATI</span></div>
    <div className="city-chips">{cityRanks.slice(0,20).map(r=><button key={r.city} className={'city-chip '+(r.city===city?'chip-current':'')} onClick={()=>selectCity(r.city)}><b>{r.city}</b><span>{r.alerts} oltre · {r.near} vicini · {r.statistical} statistici</span></button>)}</div>
+   {city!==all&&<div className="selected-city-panel" ref={cityDetailRef} id="dettaglio-comune" aria-live="polite">
+     <div className="selected-city-header"><div><div className="eyebrow">DETTAGLIO TERRITORIALE · {latestPeriod}</div><h2>{city}</h2><p>Ultime analisi disponibili per parametro. Clicca su un risultato per vedere i grafici del cluster e il confronto con i comuni vicini.</p></div><button type="button" className="outline" onClick={()=>selectCity(all)}>Tutti i comuni</button></div>
+     {cityBusy?<div className="empty">Caricamento dei risultati di {city}…</div>:cityError?<div className="notice"><Info size={17}/>{cityError}</div>:<>
+      <div className="city-kpis"><span><b>{citySignals.length}</b> segnali nel trimestre più recente</span><span><b>{cityCurrent.length}</b> parametri con dati nel trimestre</span><span><b>{cityDetails.length}</b> parametri con dati storici recenti</span></div>
+      <div className="city-detail-tabs"><button type="button" className={detailMode==='signals'?'selected':''} onClick={()=>{setDetailMode('signals');setShowAllCityRows(false)}}>Segnali ({citySignals.length})</button><button type="button" className={detailMode==='all'?'selected':''} onClick={()=>{setDetailMode('all');setShowAllCityRows(false)}}>Tutti i parametri ({cityCurrent.length||cityDetails.length})</button></div>
+      {cityDisplay.length?<div className="city-result-grid">{cityDisplay.slice(0,showAllCityRows?cityDisplay.length:12).map(e=><button type="button" className="city-result-card" key={e.city+'-'+e.parameter} onClick={()=>chooseParameter(e,true)}><span className={'label '+badgeClass(e.indicator)}>{indicatorLabel(e.indicator)}</span><b>{e.name}</b><strong>{valueText(e)}</strong><span>Limite CAP: {limitText(e)}</span><small>{percentText(e)}</small><span className="city-card-action">Visualizza storico e comuni vicini →</span></button>)}</div>:<div className="city-no-signals">{detailMode==='signals'?<>Nessuna segnalazione per {city} nell’ultimo trimestre CAP. <button type="button" className="text-action" onClick={()=>setDetailMode('all')}>Visualizza comunque i risultati disponibili</button>.</>:'Nessun parametro disponibile per questo comune nel periodo selezionato.'}</div>}
+      {!showAllCityRows&&cityDisplay.length>12&&<button type="button" className="outline show-more" onClick={()=>setShowAllCityRows(true)}>Mostra tutti i {cityDisplay.length} parametri</button>}
+      {cityCurrent.length===0&&cityDetails.length>0&&<div className="small-note">Attenzione: per questo comune non risultano misure nell’ultimo trimestre. Le righe mostrate potrebbero riferirsi a trimestri precedenti, come indicato nelle schede di dettaglio.</div>}
+     </>}
+   </div>}
    <div className="signal-toolbar"><label className="signal-toggle"><input type="checkbox" checked={clusterOnly} onChange={e=>setClusterOnly(e.target.checked)}/> Mostra solo i parametri del cluster selezionato</label><span>{significant.length} segnali {city!==all?'per '+city:'nei comuni monitorati'}</span></div>
    <div className="table-wrap"><table><thead><tr><th>Comune</th><th>Parametro</th><th>Data</th><th>Risultato</th><th>Limite CAP</th><th>% rispetto al limite</th><th>Segnale</th></tr></thead><tbody>{significant.slice(0,showCount).map((e,i)=><tr key={e.city+'|'+e.parameter+'|'+i}><td><button className="text-action" onClick={()=>selectCity(e.city)}>{e.city}</button></td><td>{e.name}</td><td>{e.date}</td><td>{valueText(e)}</td><td>{limitText(e)}</td><td>{percentText(e)}</td><td><span className={'label '+badgeClass(e.indicator)}>{indicatorLabel(e.indicator)}</span></td></tr>)}</tbody></table></div>
    {significant.length===0&&<div className="empty">Nessun segnale tra quelli selezionati. Questo non certifica che tutti i risultati siano nella norma.</div>}
    {showCount<significant.length&&<button className="outline show-more" onClick={()=>setShowCount(v=>v+50)}>Mostra altri segnali ({significant.length-showCount})</button>}
   </section>
-  <section className="panel">
-   <div className="panel-head"><div><h2>Cluster tematici personalizzabili</h2><p>Raggruppamenti di parametri simili per argomento. Le correlazioni fra i loro andamenti vengono calcolate separatamente.</p></div><a className="outline config-link" href="https://github.com/making-lemonade/cap-acqua-monitor/edit/main/public/config/clusters.json" target="_blank" rel="noreferrer">Modifica clusters.json</a></div>
-   <div className="filters-row cluster-filters"><label>Cluster<select value={clusterId} onChange={e=>{setClusterId(e.target.value);setFocusKey('')}}>{config.clusters.map(c=><option value={c.id} key={c.id}>{c.label}</option>)}</select></label>
+  <section className="panel" ref={clusterPanelRef} id="esplora-cluster">
+   <div className="panel-head"><div><h2>Cluster tematici selezionati</h2><p>Raggruppamenti di parametri simili per argomento. Le correlazioni fra i loro andamenti vengono calcolate separatamente.</p></div><a className="outline config-link" href="https://github.com/making-lemonade/cap-acqua-monitor/edit/main/public/config/clusters.json" target="_blank" rel="noreferrer">Modifica clusters.json</a></div>
+   <div className="cluster-category-scroll" role="group" aria-label="Cluster tematici">{config.clusters.filter(g=>g.id!=='personalizzato').map(g=><button type="button" key={g.id} className={'cluster-pill '+(chosenCluster?.id===g.id?'cluster-pill-active':'')} onClick={()=>{setClusterId(g.id);setFocusKey('')}}>{g.label}</button>)}</div>
+   <div className="filters-row cluster-filters"><label>Cluster<select value={chosenCluster?.id||''} onChange={e=>{setClusterId(e.target.value);setFocusKey('')}}>{config.clusters.map(c=><option value={c.id} key={c.id}>{c.label}</option>)}</select></label>
     <label>Parametro di riferimento<select value={currentKey} onChange={e=>setFocusKey(e.target.value)}>{clusterFields.map(f=><option key={f.key} value={f.key}>{f.name} · {f.unit}</option>)}</select></label>
     <label>Scala per il confronto<select value={metric} onChange={e=>setMetric(e.target.value as 'index'|'limit')}><option value="index">Indice 100 (inizio serie)</option><option value="limit">% del limite CAP</option></select></label>
    </div>
