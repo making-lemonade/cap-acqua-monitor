@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Audit official CAP quarterly source links
+        run: python scripts/discover.py
       - name: Ingest official CAP source
         run: python scripts/etl.py
       - name: Install reproducible ML environment
