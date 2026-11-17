@@ -2,3 +2,15 @@
 .map-frame{width:100%;height:400px;border-radius:13px;overflow:hidden;background:#eaf0f5;z-index:0}.map-legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:10px;color:var(--muted)}.map-legend span{display:flex;align-items:center;gap:6px}.map-frame .leaflet-control-attribution{font-family:inherit;font-size:9px}.map-frame .leaflet-tooltip{font-family:inherit;font-size:11px;border-radius:8px;box-shadow:0 4px 18px #192a3833;border:1px solid #e4e9f2}.map-frame .leaflet-tooltip strong{display:block;font-size:12px;margin-bottom:4px}.map-panel a,.subnote a{color:var(--blue);text-decoration:none}@media(max-width:700px){.map-frame{height:340px}.map-legend{gap:10px}}
 
 .ml-notice{background:color-mix(in srgb,var(--blue) 8%,var(--surface));border-color:color-mix(in srgb,var(--blue) 20%,var(--border));color:var(--ink);align-items:center}.ml-lab .stats{margin-top:20px}.ml-select{background:var(--surface);color:var(--ink);border:1px solid var(--border);padding:10px 12px;border-radius:9px;max-width:270px;font-size:12px}.ml-lab .panel>p{color:var(--muted);font-size:13px}.ml-lab .panel .table-wrap{max-height:510px;overflow:auto}@media(max-width:700px){.ml-lab .panel-head{flex-wrap:wrap}.ml-select{width:100%;max-width:none}}
+
+/* Multi-period BI controls and table pagination */
+.filter-hint{margin-left:10px;color:var(--muted);font-size:10px;font-weight:500}
+.param-filter{flex:1.55!important}
+.filters-row select{min-width:0;text-overflow:ellipsis}
+.outline:disabled,.pagination button:disabled{opacity:.5;cursor:not-allowed}
+.pagination{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:15px;color:var(--muted);font-size:11px}
+.pagination button{border:1px solid var(--border);background:var(--surface);color:var(--ink);padding:7px 10px;border-radius:8px;cursor:pointer;font-size:11px}
+.methods .table-wrap a{color:var(--blue);text-decoration:none}
+.methods .table-wrap a:hover{text-decoration:underline}
+@media(max-width:1180px){.filters-row{flex-wrap:wrap}.filters-row label{flex:1 1 200px}.filters-row .param-filter{flex:2 1 260px!important}.filters-row button{flex:0 0 auto}}
+@media(max-width:700px){.filter-hint{display:block;margin:5px 0 0}.filters-row .param-filter{width:100%}.pagination{flex-wrap:wrap}}
