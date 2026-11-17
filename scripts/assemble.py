@@ -147,6 +147,8 @@ def main():
              "statistical_method":"median and MAD robust z-score","minimum_history":min_hist,
              "threshold_abs_z":z_threshold})
     geography=reference_geography(cities)
+    quality_path=OUT/"pipeline_quality.json"
+    quality=json.loads(quality_path.read_text(encoding="utf-8")) if quality_path.exists() else {"issues":[]}
     manifest={
       "metadata":{
         "source":"https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua",
@@ -164,7 +166,7 @@ def main():
       "fields":sorted(fields.values(),key=lambda x:x["name"].lower()),
       "counts":{"periods":len(periods),"cities":len(cities),"parameters":len(fields),"observations":total},
       "geography":{"source":GEO_URL,"license":"CC BY 4.0","credit":"RP92/comuni-italiani, ISTAT and Garda Informatica","locations":geography},
-      "failures":[]
+      "failures":quality.get("issues",[])
     }
     save_json(OUT/"manifest.json",manifest)
     print("ASSEMBLY_OK",json.dumps({"periods":len(periods),"observations":total,"cities":len(cities),
