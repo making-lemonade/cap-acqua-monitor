@@ -1,0 +1,84 @@
+{
+  "landing_page": "https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua",
+  "checked_on": "2026-11-17",
+  "description": "Official CAP quarterly open data identified from HTML data-link attributes",
+  "periods": [
+    {
+      "id": "2024-q1",
+      "year": 2024,
+      "quarter": 1,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/i-trimestre/Analisi%20acquedotto.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/i-trimestre/Analisi%20acquedotto.json"
+    },
+    {
+      "id": "2024-q2",
+      "year": 2024,
+      "quarter": 2,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/ii-trimestre/Analisi_II%20Trimestre%202024.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/ii-trimestre/Analisi_II%20Trimestre%202024.json"
+    },
+    {
+      "id": "2024-q3",
+      "year": 2024,
+      "quarter": 3,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/iii-trimestre/Analisi%20III%20Trimestre%202024.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/iii-trimestre/Analisi%20III%20trim.json"
+    },
+    {
+      "id": "2024-q4",
+      "year": 2024,
+      "quarter": 4,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/iv-trimestre/Analisi%20Acquedotto%20IV%20trim%2024.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2024/iv-trimestre/Analisi%20acquedotto%20IV%20trim%2024.json"
+    },
+    {
+      "id": "2025-q1",
+      "year": 2025,
+      "quarter": 1,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/i-trimestre/Acquedotto%20I%20TRIMESTRE%202025.CSV",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/i-trimestre/ACQUEDOTTO%20I%20TRIMESTRE%202025.json"
+    },
+    {
+      "id": "2025-q2",
+      "year": 2025,
+      "quarter": 2,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/ii-trimestre/Acquedotto%20II%20TRIMESTRE%202025.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/ii-trimestre/Acquedotto%20II%20TRIMESTRE%202025.json"
+    },
+    {
+      "id": "2025-q3",
+      "year": 2025,
+      "quarter": 3,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/iii-trimestre/Analisi%20acquedotto%20csv.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/iii-trimestre/Analisi%20acquedotto%20json.json"
+    },
+    {
+      "id": "2025-q4",
+      "year": 2025,
+      "quarter": 4,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/iv-trimestre/Analisi%20acquedotto%20IV%20trimestre%202025.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2025/iv-trimestre/Analisi%20acquedotto%20IV%20trimestre%202025.json"
+    },
+    {
+      "id": "2026-q1",
+      "year": 2026,
+      "quarter": 1,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/i-trimestre-2026/Acquedotto%20I%20TRIMESTRE%202026.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/i-trimestre-2026/ACQUEDOTTO%20I%20TRIMESTRE%202026.json"
+    },
+    {
+      "id": "2026-q2",
+      "year": 2026,
+      "quarter": 2,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/ii-trimestre/II%20Trimestre%202026.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/ii-trimestre/II%20Trimestre%202026.json"
+    },
+    {
+      "id": "2026-q3",
+      "year": 2026,
+      "quarter": 3,
+      "csv_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/iii-trimestre/III%20trimestre%202026.csv",
+      "json_url": "https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/iii-trimestre/III%20trimestre%202026.json"
+    }
+  ]
+}
