@@ -13,11 +13,14 @@ export default function NearbyMap({points,radiusKm,onSelect}:Props){
   if(!element.current||!points.length)return;
   const anchor=points.find(p=>p.isAnchor);
   if(!anchor)return;
-  const map=L.map(element.current,{scrollWheelZoom:false,preferCanvas:true});
+  // Leaflet vector layers require an initialized map center/zoom.
+  // Adding circles before setView() throws _leaflet_pos / layerPointToLatLng
+  // and can unmount the entire React app during municipality selection.
+  const center:L.LatLngExpression=[anchor.lat,anchor.lng];
+  const map=L.map(element.current,{scrollWheelZoom:false,preferCanvas:true}).setView(center,10);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
    maxZoom:17,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
-  const center:L.LatLngExpression=[anchor.lat,anchor.lng];
   const area=L.circle(center,{radius:radiusKm*1000,color:'#4285cf',fillColor:'#4388ea',fillOpacity:.045,weight:1.5,dashArray:'6,5'}).addTo(map);
   for(const point of points){
    const alert=point.indicator==='source_above_limit';
