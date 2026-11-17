@@ -12,6 +12,13 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from gziputil import deterministic_text_gzip
+
+ROOT_CONFIG = Path(__file__).resolve().parents[1] / "public" / "config" / "clusters.json"
+NEAR_LIMIT_FRACTION = float(json.loads(ROOT_CONFIG.read_text(encoding="utf-8"))["analysis"]["near_limit_fraction"])
+if not 0 < NEAR_LIMIT_FRACTION < 1:
+    raise ValueError("near_limit_fraction must be between 0 and 1")
+
 from etl_csv_all import (SRC, OUT, RAW, QUARTERS, download, discover_periods,
                          csv_rows, read_schema, choose_date_format, date_value, numeric,
                          normalize, save_json)
@@ -51,7 +58,7 @@ def parse_period(source):
     wrong_quarter = 0
     quarter = source["quarter"]
     try:
-        with gzip.open(tmp_file,"wt",encoding="utf-8",compresslevel=6) as out:
+        with deterministic_text_gzip(tmp_file,compresslevel=6) as out:
             for r in rows[header_idx+1:]:
                 date = date_value(r[0] if r else "", fmt)
                 city = str(r[city_ix] if city_ix < len(r) else "").strip().upper()
@@ -81,7 +88,7 @@ def parse_period(source):
                             status = "under_limit" if value <= limit else "unknown"
                         else:
                             status = ("above_limit" if value>limit else
-                                      "near_limit" if limit>0 and value>=limit*.8 else "under_limit")
+                                      "near_limit" if limit>0 and value>=limit*NEAR_LIMIT_FRACTION else "under_limit")
                     row = {"city":city,"date":date,"address":address,"sample":sample,
                            "parameter":field["key"],"value":value,"censored":censored,
                            "raw":raw_value,"status":status}
