@@ -1,5 +1,10 @@
 import {test,expect} from '@playwright/test';
 
+test.beforeEach(async({page})=>{
+ page.on('pageerror',err=>console.log('PAGE_ERROR',err.stack||err.message));
+ page.on('console',msg=>{if(msg.type()==='error')console.log('BROWSER_CONSOLE_ERROR',msg.text())});
+});
+
 test('city selection reveals real values and opens related cluster on mobile and desktop',async({page})=>{
  await page.route('https://fonts.googleapis.com/**',r=>r.abort());
  await page.route('https://fonts.gstatic.com/**',r=>r.abort());
@@ -11,6 +16,13 @@ test('city selection reveals real values and opens related cluster on mobile and
  await expect(firstCity).toBeVisible();
  const city=(await firstCity.locator('b').innerText()).trim();
  await firstCity.click();
+ await page.waitForTimeout(500);
+ console.log('CITY_CLICK_DIAGNOSTIC',JSON.stringify(await page.evaluate(()=>({
+  selected:document.querySelector('select')?.value,
+  chips:document.querySelectorAll('.city-chip').length,
+  root:document.querySelector('#root')?.textContent?.slice(0,450),
+  detailExists:!!document.getElementById('dettaglio-comune')
+ }))));
  const detail=page.locator('#dettaglio-comune');
  await expect(detail).toBeVisible();
  await expect(detail.getByRole('heading',{name:city})).toBeVisible();
@@ -33,6 +45,11 @@ test('city details are loaded by shard rather than an 8MB global download',async
  await page.getByRole('button',{name:/Segnali & Cluster/}).click();
  await expect(page.locator('.city-chip').first()).toBeVisible();
  await page.locator('.city-chip').first().click();
+ await page.waitForTimeout(500);
+ console.log('SHARD_CLICK_DIAGNOSTIC',JSON.stringify(await page.evaluate(()=>({
+  root:document.querySelector('#root')?.textContent?.slice(0,350),
+  detailExists:!!document.getElementById('dettaglio-comune')
+ }))));
  await expect(page.locator('#dettaglio-comune .city-result-card').first()).toBeVisible();
  expect(loaded.some(url=>url.includes('/data/city_latest/'))).toBeTruthy();
  expect(loaded.some(url=>url.includes('/data/latest_signals.json'))).toBeTruthy();
