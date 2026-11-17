@@ -132,9 +132,12 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   });
   return()=>ctrl.abort();
  },[city,snapshot]);
- const chosenCluster=config?.clusters.find(c=>c.id===clusterId)||config?.clusters[0];
+ const chosenCluster:Cluster|undefined=clusterId==='singolo'
+  ?{id:'singolo',label:'Parametro individuale',description:'Parametro non assegnato a un cluster tematico. Sono disponibili storico, limiti e confronto territoriale senza inventare collegamenti.',parameters:[manifest.fields.find(f=>f.key===focusKey)?.name||'Parametro']}
+  :(config?.clusters.find(c=>c.id===clusterId)||config?.clusters[0]);
  const clusterFields=useMemo(()=>{
   if(!chosenCluster)return[];
+  if(chosenCluster.id==='singolo')return manifest.fields.filter(f=>f.key===focusKey).slice(0,1);
   const ids=new Set<string>();
   const selection:Field[]=[];
   for(const name of chosenCluster.parameters){
@@ -145,7 +148,7 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
    }
   }
   return selection;
- },[manifest.fields,chosenCluster]);
+ },[manifest.fields,chosenCluster,focusKey]);
  const clusterKeys=useMemo(()=>new Set(clusterFields.map(f=>f.key)),[clusterFields]);
  const activeField=clusterFields.find(f=>f.key===focusKey)||clusterFields[0];
  const currentKey=activeField?.key||'';
@@ -268,7 +271,7 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   if(suggested){setClusterId(suggested.id);setFocusKey(e.parameter)}
   else {
    // No silent misclassification: a source parameter without a curated group stays ungrouped.
-   setFocusKey('');
+   setClusterId('singolo');setFocusKey(e.parameter);
   }
   if(scrollToChart)requestAnimationFrame(()=>clusterPanelRef.current?.scrollIntoView({behavior:'smooth',block:'start'}));
  },[config]);
@@ -309,7 +312,7 @@ export default function SignalsLab({manifest,city,onCitySelect}:Props){
   <section className="panel" ref={clusterPanelRef} id="esplora-cluster">
    <div className="panel-head"><div><h2>Cluster tematici selezionati</h2><p>Raggruppamenti di parametri simili per argomento. Le correlazioni fra i loro andamenti vengono calcolate separatamente.</p></div><a className="outline config-link" href="https://github.com/making-lemonade/cap-acqua-monitor/edit/main/public/config/clusters.json" target="_blank" rel="noreferrer">Modifica clusters.json</a></div>
    <div className="cluster-category-scroll" role="group" aria-label="Cluster tematici">{config.clusters.filter(g=>g.id!=='personalizzato').map(g=><button type="button" key={g.id} className={'cluster-pill '+(chosenCluster?.id===g.id?'cluster-pill-active':'')} onClick={()=>{setClusterId(g.id);setFocusKey('')}}>{g.label}</button>)}</div>
-   <div className="filters-row cluster-filters"><label>Cluster<select value={chosenCluster?.id||''} onChange={e=>{setClusterId(e.target.value);setFocusKey('')}}>{config.clusters.map(c=><option value={c.id} key={c.id}>{c.label}</option>)}</select></label>
+   <div className="filters-row cluster-filters"><label>Cluster<select value={chosenCluster?.id||''} onChange={e=>{setClusterId(e.target.value);setFocusKey('')}}>{clusterId==='singolo'&&<option value="singolo">Parametro individuale</option>}{config.clusters.map(c=><option value={c.id} key={c.id}>{c.label}</option>)}</select></label>
     <label>Parametro di riferimento<select value={currentKey} onChange={e=>setFocusKey(e.target.value)}>{clusterFields.map(f=><option key={f.key} value={f.key}>{f.name} · {f.unit}</option>)}</select></label>
     <label>Scala per il confronto<select value={metric} onChange={e=>setMetric(e.target.value as 'index'|'limit')}><option value="index">Indice 100 (inizio serie)</option><option value="limit">% del limite CAP</option></select></label>
    </div>
