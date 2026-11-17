@@ -1,105 +1,87 @@
-# Aqua Intelligence · Water Quality Analytics
+# Aqua Intelligence · Open Water Analytics
 
-**A portfolio-grade, end-to-end Business Intelligence, Data Engineering and experimental Machine Learning application built on official Italian water-quality open data.**
+**Portfolio project: Business Intelligence, Data Engineering, geospatial analytics and explainable exploratory ML from real-world messy open data.**
 
-[GitHub Pages demo](https://making-lemonade.github.io/cap-acqua-monitor/) · [Official Gruppo CAP open data](https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua)
+**Live:** https://making-lemonade.github.io/cap-acqua-monitor/  
+**Source:** https://github.com/making-lemonade/cap-acqua-monitor  
+**Official data:** https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua
 
-> **Independent project.** Not affiliated with Gruppo CAP. Color-coded summaries and ML outliers are exploratory analytical aids, **not drinking-water safety certifications**.
+> Independent portfolio project, not affiliated with Gruppo CAP. This application does not certify potability or provide medical advice.
 
-## What this project demonstrates
+## Scope: complete public CAP aqueduct archive
 
-| Skill | Implementation |
-|---|---|
-| Data Engineering | Python ETL, non-standard JSON parsing, original-file retention, SHA-256 provenance |
-| Business Intelligence | City/parameter filters, time series, coverage KPIs, regulated-source threshold comparisons and CSV exports |
-| Geospatial analytics | Interactive Leaflet / OpenStreetMap municipality map with per-parameter statuses |
-| Applied ML | Reproducible scikit-learn IsolationForest exploratory anomaly screening |
-| Frontend Engineering | React, TypeScript, Vite, responsive Apple-inspired design, dark mode, accessibility-minded UI |
-| DevOps | Scheduled ingestion, CI build, GitHub Actions and zero-server GitHub Pages deployment |
+As of **17 November 2026**, the official CAP page exposes **11 quarterly aqueduct datasets** from **Q1 2024 through Q3 2026**, each in CSV and JSON (22 original files). The exact vetted URLs, including naming inconsistencies, are stored in [scripts/sources.json](scripts/sources.json). The ingestion also discovers newly published quarterly links from the official HTML page.
 
-## Verified input data (as of 17 November 2026)
+The ETL archives both downloaded originals byte-for-byte in **public/data/raw/**. A SHA-256 is recorded in the manifest for every quarter and format. No source file is silently rewritten or discarded.
 
-The initial normalized Q1 2026 feed produced:
-- **2,465** source records, including metadata rows;
-- **133** unique municipality names;
-- **142,964** numeric / censored normalized observations;
-- **174** parameter labels;
-- municipality reference coordinates matched for **133 / 133** using a separately attributed source.
+### Current functionality
 
-These counts describe **processing coverage**, not compliance, potability, the number of independent samples or active aqueduct infrastructure. The pipeline recalculates these counts when run.
+- Interactive filters for **quarter, municipality and parameter**.
+- Historical charts with *weighted quarterly averages* using **quantified** readings only.
+- Daily time-series within the selected quarter, sample-level exploration, searchable paginated table and CSV export.
+- Interactive Leaflet/OpenStreetMap territory map, with color-coded indicators derived from the **selected parameter and quarter**, not general judgements about a city's water.
+- Trend data and normalized measurements **sharded per parameter** for fast, low-bandwidth static hosting.
+- Downloadable, source-provenanced original CSV and JSON files, public data dictionary and processing audit metadata.
+- Experimental scikit-learn Isolation Forest models trained on historical quantified observations; results clearly identified as *statistical outliers*, not sanitary or legal failures.
+- GitHub Actions orchestration and GitHub Pages, no server or paid services.
 
-## Pipeline
+## Architecture
 
-```
-Official CAP JSON (malformed concatenated top-level objects) + CSV
-       │ preserve exact raw files and hash
-       ▼
-Python ETL (extract metadata, normalize date / city / parameter, flags)
-       │
-       ├── Municipality reference locations (RP92, not sample locations)
-       ├── JSON dashboard model (per-observation source threshold flags)
-       └── Unsupervised ML experiment (IsolationForest)
-       ▼
-Versioned files in public/data/ → Vite / React / TypeScript
-       ▼
-GitHub Actions → GitHub Pages (no server, database, paid API, or secret key)
-```
+\`\`\`
+Gruppo CAP official quarterly JSON + CSV (2024–2026)
+    ├── Original bytes: public/data/raw/<year>-q<quarter>.{json,csv}
+    └── Python source-aware parser: scripts/etl_all.py
+             ├── date formats inferred per source (US vs EU)
+             ├── source-specific field names, units and thresholds
+             ├── flags for values reported below quantification limit
+             ├── stable parameter keys based on normalized name + unit
+             ├── data/quarters/<quarter-id>/<parameter-id>.json
+             ├── data/trends/<parameter-id>.json (pre-aggregated history)
+             └── data/manifest.json (provenance, coverage, hashes, geography)
+                 │
+                 ├── Python / scikit-learn: scripts/ml.py → ml-anomalies.json
+                 └── React + TypeScript / Recharts + Leaflet
+                                    ↓
+                               GitHub Pages
+\`\`\`
 
-### Data quality and limitations
+## Why this demonstrates senior BI / data engineering skills
 
-1. **The original CAP `.json` is not a valid JSON array:** it contains consecutive top-level objects. A streaming decoder preserves the original file and parses it defensively.
-2. Values such as `<0,02` are **left-censored**: the number is an upper detection/quantification boundary, not an exact concentration. The time-series average excludes censored values.
-3. Measurement dates in the source are encoded **MM/DD/YYYY** (for example, `03/25/2026`) even though the dataset is Italian. Parsing is explicit.
-4. Reference limits are read from **CAP's published metadata**, not independently validated for parameter-specific legal applicability. The **80% near-limit** color is an arbitrary visualization convention. Incomplete/unknown data are never treated as compliant. Zero bacteriological thresholds are handled explicitly.
-5. The map shows **approximate municipality reference coordinates**, obtained from a separate nonofficial dataset; it does **not** claim to locate CAP sampling points or aqueduct facilities. A red point means at least one result exceeding a source-published threshold for the currently selected parameter, **not** that all drinking water in that city is unsafe.
-6. IsolationForest is a **statistical exploration tool**, trained separately on selected quantitative parameters, excluding censored observations. Naturally varying geography, measurement frequency and mixtures of sampling points can create false positives. Outliers are **not** health or regulatory alerts; scores from different models are not comparable.
-7. Initial scope: **Q1 2026 only**. Trends are within this period. Multi-quarter ingestion, parameter-level regulatory validation, and sampling-point geography are documented future improvements rather than simulated functionality.
+**Data provenance:** Original source files remain available; SHA-256, source URLs, observation counts, period, date format and field-specific units are explicit.
 
-## Local development
+**Semantic modeling:** Measurements are standardized without merging distinct parameters with different names or units. A threshold comes from the **source period** and is not applied retroactively to older samples.
 
-Requires Python 3.12+ and Node.js 22+:
+**Data quality:** Values such as \`<0,01\` are **left-censored**, NOT zero or the exact upper bound. They are excluded from numerical averages, while remaining visible in the underlying data. Parsing errors abort a full-history build rather than silently advertising incomplete coverage.
 
-```bash
-python scripts/etl.py
+**Performance:** Quarterly observations are statically sharded per parameter; charts use precomputed weighted aggregates. The visitor never downloads all original archives to open the dashboard.
+
+**Cautious interpretation:** A source-listed threshold does not constitute independently verified legal applicability; 80% proximity is merely an interface warning, not a legal category. Naturally different aquifers or measurement periods can produce ML outliers without indicating any hazard.
+
+**Geospatial limits:** Points represent *approximate municipality reference coordinates*, not aqueduct infrastructure or sampling stations. Geography source: [RP92/comuni-italiani](https://github.com/RP92/comuni-italiani), based on ISTAT and Garda Informatica data, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Map tiles: [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
+
+## Run locally
+
+Python 3.12+ and Node.js 22+:
+
+\`\`\`bash
+python scripts/etl_all.py
 python -m pip install -r scripts/requirements.txt
 python scripts/ml.py
 npm install
 npm run dev
-```
+\`\`\`
 
-Build: `npm run build`.
+Production build: \`npm run build\`.
 
-The ETL requires access to official CAP URLs and the credited municipality dataset. It saves:
-- `public/data/cap-2026-q1-original.json` — original CAP JSON bytes;
-- `public/data/cap-2026-q1-original.csv` — original CAP CSV bytes, if available;
-- `public/data/dashboard.json` — normalized observations, field schema, provenance and municipality reference coordinates;
-- `public/data/ml-anomalies.json` — optional, experimentally generated model output.
+## CI/CD
 
-## Deployment
+The [GitHub Actions workflow](.github/workflows/deploy.yml) handles source download, ETL, model generation, build and Pages deployment. It runs automatically on changes to \`main\` and weekly for source refresh. The originals and normalized outputs are retained in \`public/data/\` and are published as static files.
 
-Repository: `making-lemonade/cap-acqua-monitor`.
+Potential future extensions: authoritative point-level coordinates, revised legal thresholds and longitudinal parameter harmonization with documented mappings. None are presented as already implemented.
 
-1. In **Settings → Pages → Build and deployment**, select **GitHub Actions** (one-time repo setting; GitHub's GITHUB_TOKEN cannot create a Pages site without extra admin permissions).
-2. The committed `.github/workflows/deploy.yml` automatically runs ETL, the offline ML experiment, the TypeScript/Vite build and Pages deployment on updates to `main`.
-3. A weekly scheduled run refreshes the Q1 2026 source archive and generated datasets. It does **not** silently change to a later quarter.
+## Sources and verification
 
-No personal access token, cloud server, payment method or external data warehouse is needed.
-
-## Provenance, licenses and links
-
-- [Gruppo CAP — Water quality analytical open data](https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua), initial period: I trimestre 2026. CAP states data are open and reusable.
-- [Q1 2026 original JSON](https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/i-trimestre-2026/ACQUEDOTTO%20I%20TRIMESTRE%202026.json)
-- [Q1 2026 original CSV](https://www.gruppocap.it/content/dam/groupcap/assets/documents/documents-web/cosa-facciamo/qualita-acqua/analisi-2026/i-trimestre-2026/Acquedotto%20I%20TRIMESTRE%202026.csv)
-- [RP92/comuni-italiani](https://github.com/RP92/comuni-italiani), municipality coordinates derived from ISTAT/Garda Informatica, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Original coordinates were adapted by matching CAP municipality names; the source is independently credited.
-- [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors for map tiles.
-- [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html) for experimental, reproducible unsupervised ML.
-
-## Roadmap
-
-- Multi-quarter history, dimensionally consistent schema and source-snapshot versioning.
-- Validate each legal limit and reported unit against authoritative documentation.
-- Administrative boundary overlays and authoritative sample location identifiers when published.
-- Columnar Parquet / browser SQL analytics for larger datasets.
-
----
-**Built to show the full lifecycle:** messy public data → defensible transformations → reproducible analytical products → transparent reporting → production deployment.
+- [Official CAP water-quality open data](https://www.gruppocap.it/it/cosa-facciamo/qualita-acqua), accessed 17 November 2026.
+- [CAP quarterly URL registry](scripts/sources.json), verified against the HTML \`data-link\` attributes on the CAP website.
+- [RP92 municipality data](https://github.com/RP92/comuni-italiani), original ISTAT and Garda Informatica sources, CC BY 4.0.
+- [scikit-learn IsolationForest reference](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html).
