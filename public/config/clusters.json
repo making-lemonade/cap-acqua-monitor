@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "description": "Curated analytical groups for CAP water quality. Similarity here means thematic grouping, not proven correlation or a shared water source.",
+  "analysis": {
+    "near_limit_fraction": 0.8,
+    "statistical_robust_z": 3.5,
+    "min_history_quantified": 10,
+    "default_radius_km": 15,
+    "neighbor_radius_options_km": [
+      5,
+      10,
+      15,
+      25,
+      40,
+      60
+    ],
+    "pairwise_min_quarters": 5
+  },
+  "clusters": [
+    {
+      "id": "metalli",
+      "label": "Metalli e metalloidi",
+      "description": "Elementi in tracce; unità e limiti sono valutati individualmente.",
+      "parameters": [
+        "Arsenico (As)",
+        "Manganese (Mn)",
+        "Ferro (Fe)",
+        "Nichel (Ni)",
+        "Piombo (Pb)",
+        "Cromo Totale (Cr)",
+        "Alluminio (Al)",
+        "Antimonio (Sb)",
+        "Bario (Ba)"
+      ]
+    },
+    {
+      "id": "azotati",
+      "label": "Composti azotati",
+      "description": "Parametri del ciclo dell’azoto; una correlazione non dimostra una causa comune.",
+      "parameters": [
+        "Nitrato (come NO3)",
+        "Nitrito (come NO2)",
+        "Ammonio (NH4)"
+      ]
+    },
+    {
+      "id": "mineralizzazione",
+      "label": "Mineralizzazione e sali",
+      "description": "Parametri generali della chimica dell’acqua; confronto storico su scala relativa.",
+      "parameters": [
+        "Conduttività a 20° C",
+        "Durezza Totale",
+        "Calcio (Ca)",
+        "Magnesio (Mg)",
+        "Sodio (Na)",
+        "Cloruro (Cl)",
+        "Solfato (SO4)",
+        "Potassio (K)"
+      ]
+    },
+    {
+      "id": "pfas",
+      "label": "PFAS",
+      "description": "Singole sostanze e somme di PFAS: le diverse definizioni delle somme non sono intercambiabili.",
+      "parameters": [
+        "Somma di PFAS",
+        "Somma di 30 PFAS",
+        "Somma di 4 PFAS",
+        "Acido Perfluorottanoico (PFOA)",
+        "Acido Perfluorottansolfonico (PFOS)",
+        "PFAS (Somma di Sostanze Perfluoroalchiliche)"
+      ]
+    },
+    {
+      "id": "microbiologia",
+      "label": "Microbiologia",
+      "description": "Presenze microbiologiche; l'assenza di misurazioni non equivale ad assenza del microrganismo.",
+      "parameters": [
+        "Coliformi totali",
+        "Escherichia coli (E. coli)",
+        "Enterococchi",
+        "Conteggio delle colonie a 22°C",
+        "Legionella pneumophila",
+        "Legionella spp."
+      ]
+    },
+    {
+      "id": "trattamento",
+      "label": "Disinfezione e sottoprodotti",
+      "description": "Indicatori relativi al trattamento e a possibili sottoprodotti.",
+      "parameters": [
+        "Clorito (ClO2)",
+        "Clorati (CLO3)",
+        "Bromati (BrO3)",
+        "Cloro Residuo (CLORORES)",
+        "Bromoformio",
+        "Dibromoclorometano",
+        "Cloroformio"
+      ]
+    },
+    {
+      "id": "personalizzato",
+      "label": "Il mio cluster",
+      "description": "Personalizza i parametri qui per creare un cluster di portfolio.",
+      "parameters": [
+        "Arsenico (As)",
+        "Nitrato (come NO3)",
+        "Somma di PFAS"
+      ]
+    }
+  ]
+}
